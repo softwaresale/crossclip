@@ -6,4 +6,5 @@ export interface Clip {
   content: string; // For now, only support text
   clipType: string;
   created: firestore.Timestamp;
+  synced?: boolean;
 }

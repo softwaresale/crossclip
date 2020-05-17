@@ -17,7 +17,7 @@ export class LocalClipsDisplayComponent implements OnInit {
   constructor(private store$: Store<State>) { }
 
   ngOnInit(): void {
-    this.clips$ = this.store$.pipe(select(clipsSelectReversed));
+    this.clips$ = this.store$.pipe(select(clipsSelectAll));
   }
 
 }

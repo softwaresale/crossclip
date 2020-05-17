@@ -1,5 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Clip } from "../../state/clip/clip.model";
+import { Store } from '@ngrx/store';
+import { State } from '../../state/state';
+import { handleRemoveClip, syncClip } from '../../state/clip/clip.actions';
+import { ElectronService } from 'ngx-electron';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-clip-display',
@@ -11,9 +16,27 @@ export class ClipDisplayComponent implements OnInit {
   @Input()
   clip: Clip;
 
-  constructor() { }
+  constructor(
+    private store$: Store<State>,
+    private electronService: ElectronService,
+    private matSnackbar: MatSnackBar,
+  ) { }
 
   ngOnInit(): void {
   }
 
+  onSyncClip() {
+    this.store$.dispatch(syncClip({ clip: this.clip }));
+  }
+
+  onCopyText() {
+    this.electronService.clipboard.writeText(this.clip.content);
+    this.matSnackbar.open('Copied text to clipboard', 'CLOSE', {
+      duration: 2000,
+    });
+  }
+
+  onRemoveClip() {
+    this.store$.dispatch(handleRemoveClip({ clip: this.clip }));
+  }
 }

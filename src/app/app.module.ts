@@ -20,6 +20,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatListModule } from "@angular/material/list";
 import { LocalClipsDisplayModule } from "./local-clips-display/local-clips-display.module";
 import { RemoteClipsDisplayModule } from "./remote-clips-display/remote-clips-display.module";
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { RemoteClipsDisplayModule } from "./remote-clips-display/remote-clips-di
       appId: "1:447960949346:web:6a1575386630710539673b",
       measurementId: "G-4VZZLXSVKJ"
     }),
+    AngularFirestoreModule,
     NgxElectronModule,
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot([ClipEffects]),

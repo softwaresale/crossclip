@@ -9,7 +9,9 @@ export interface ClipState extends EntityState<Clip> {
   // additional entities state properties
 }
 
-export const clipEntityAdapter: EntityAdapter<Clip> = createEntityAdapter<Clip>();
+export const clipEntityAdapter: EntityAdapter<Clip> = createEntityAdapter<Clip>({
+  sortComparer: (a, b) => b.created.toDate().getTime() - a.created.toDate().getTime()
+});
 
 export const clipsInitialState: ClipState = clipEntityAdapter.getInitialState({
   // additional entity state properties

@@ -8,6 +8,16 @@ export const clipboardChanged = createAction(
   props<{ text: string }>(),
 );
 
+export const syncClip = createAction(
+  '[Clip/API] Syncing clip with cloud',
+  props<{ clip: Clip }>()
+);
+
+export const handleRemoveClip = createAction(
+  '[Clip/API] Removing clip',
+  props<{ clip: Clip }>(),
+);
+
 export const loadClips = createAction(
   '[Clip/API] Load Clips',
   props<{ clips: Clip[] }>()

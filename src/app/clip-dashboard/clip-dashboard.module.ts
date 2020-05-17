@@ -7,6 +7,7 @@ import { ClipDisplayComponent } from './clip-display/clip-display.component';
 import { MatIconModule } from "@angular/material/icon";
 import { MatCardModule } from "@angular/material/card";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [ClipDashboardComponent, ClipDisplayComponent],
@@ -17,6 +18,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     MatIconModule,
     MatCardModule,
     MatTooltipModule,
+    MatSnackBarModule,
   ],
   exports: [ClipDashboardComponent],
 })
