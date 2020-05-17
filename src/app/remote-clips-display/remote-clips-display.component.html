@@ -1,0 +1,16 @@
+
+<div class="content-container">
+  <mat-card>
+    <mat-card-content>
+      <div>
+        <h1>Remote Clips</h1>
+        <ng-template *ngIf="!!(clips$ | async) && (clips$ | async).length !== 0; else emptyTemplate">
+          <app-clip-dashboard [clips]="clips$ | async"></app-clip-dashboard>
+        </ng-template>
+        <ng-template #emptyTemplate>
+          <h3>You have no remote clips. Upload some local clips to get started</h3>
+        </ng-template>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

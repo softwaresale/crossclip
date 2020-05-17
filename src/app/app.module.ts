@@ -19,6 +19,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatButtonModule } from "@angular/material/button";
 import { MatListModule } from "@angular/material/list";
 import { LocalClipsDisplayModule } from "./local-clips-display/local-clips-display.module";
+import { RemoteClipsDisplayModule } from "./remote-clips-display/remote-clips-display.module";
 
 @NgModule({
   declarations: [
@@ -52,7 +53,9 @@ import { LocalClipsDisplayModule } from "./local-clips-display/local-clips-displ
     MatButtonModule,
     MatListModule,
 
+    // Local UI modules
     LocalClipsDisplayModule,
+    RemoteClipsDisplayModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
