@@ -10,6 +10,10 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { initialState, reducers } from "./state/state";
+import { AngularFireModule } from "@angular/fire";
+import { ClipEffects } from "./state/clip/clip.effects";
+import { NgxElectronModule } from "ngx-electron";
 
 @NgModule({
   declarations: [
@@ -19,9 +23,21 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot(reducers, { initialState }),
+    // TODO consider putting this in environment
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyCKDvqohDwPW-Up1ZgQzASqUWDX8QfCA4s",
+      authDomain: "crossclip.firebaseapp.com",
+      databaseURL: "https://crossclip.firebaseio.com",
+      projectId: "crossclip",
+      storageBucket: "crossclip.appspot.com",
+      messagingSenderId: "447960949346",
+      appId: "1:447960949346:web:6a1575386630710539673b",
+      measurementId: "G-4VZZLXSVKJ"
+    }),
+    NgxElectronModule,
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([ClipEffects]),
     StoreRouterConnectingModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
   ],

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clipboard Watcher</title>
+</head>
+<body>
+  <script type="text/javascript">
+    const { clipboard, ipcRenderer } = require('electron');
+
+    let previousText;
+    function watchForClipboardChange() {
+
+      // Get the current text
+      let current = clipboard.readText();
+
+      // clipboard has changed, dispatch the event and update last text
+      if (current !== previousText) {
+        previousText = current;
+        ipcRenderer.send('clipboard-changed', current);
+      }
+    }
+
+    let watcherId;
+
+    // Watch for clipboard changes every 500ms
+    watcherId = setInterval(watchForClipboardChange, 500);
+
+    // Stop the watcher. Will also be stopped if the process is killed... I hope
+    ipcRenderer.on('clipboard-watcher-stop', () => {
+      clearInterval(watcherId);
+    });
+  </script>
+</body>
+</html>

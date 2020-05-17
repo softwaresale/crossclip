@@ -3,8 +3,13 @@ import { Update } from '@ngrx/entity';
 
 import { Clip } from './clip.model';
 
+export const clipboardChanged = createAction(
+  '[Clip/API] Clipboard content changed',
+  props<{ text: string }>(),
+);
+
 export const loadClips = createAction(
-  '[Clip/API] Load Clips', 
+  '[Clip/API] Load Clips',
   props<{ clips: Clip[] }>()
 );
 
@@ -50,4 +55,8 @@ export const deleteClips = createAction(
 
 export const clearClips = createAction(
   '[Clip/API] Clear Clips'
+);
+
+export const clipError = createAction(
+  '[Clip/API] Error encountered',
 );

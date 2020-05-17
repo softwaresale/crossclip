@@ -1,3 +1,9 @@
 <div>
-
+  <h1>Crossclip</h1>
+  <textarea #textAreaElement></textarea>
+  <ul>
+    <li *ngFor="let clip of clips$ | async">
+      {{ clip | json }}
+    </li>
+  </ul>
 </div>

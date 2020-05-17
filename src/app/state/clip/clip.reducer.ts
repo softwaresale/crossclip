@@ -5,55 +5,47 @@ import * as ClipActions from './clip.actions';
 
 export const clipsFeatureKey = 'clips';
 
-export interface State extends EntityState<Clip> {
+export interface ClipState extends EntityState<Clip> {
   // additional entities state properties
 }
 
-export const adapter: EntityAdapter<Clip> = createEntityAdapter<Clip>();
+export const clipEntityAdapter: EntityAdapter<Clip> = createEntityAdapter<Clip>();
 
-export const initialState: State = adapter.getInitialState({
+export const clipsInitialState: ClipState = clipEntityAdapter.getInitialState({
   // additional entity state properties
 });
 
 
-export const reducer = createReducer(
-  initialState,
+export const clipsReducer = createReducer(
+  clipsInitialState,
   on(ClipActions.addClip,
-    (state, action) => adapter.addOne(action.clip, state)
+    (state, action) => clipEntityAdapter.addOne(action.clip, state)
   ),
   on(ClipActions.upsertClip,
-    (state, action) => adapter.upsertOne(action.clip, state)
+    (state, action) => clipEntityAdapter.upsertOne(action.clip, state)
   ),
   on(ClipActions.addClips,
-    (state, action) => adapter.addMany(action.clips, state)
+    (state, action) => clipEntityAdapter.addMany(action.clips, state)
   ),
   on(ClipActions.upsertClips,
-    (state, action) => adapter.upsertMany(action.clips, state)
+    (state, action) => clipEntityAdapter.upsertMany(action.clips, state)
   ),
   on(ClipActions.updateClip,
-    (state, action) => adapter.updateOne(action.clip, state)
+    (state, action) => clipEntityAdapter.updateOne(action.clip, state)
   ),
   on(ClipActions.updateClips,
-    (state, action) => adapter.updateMany(action.clips, state)
+    (state, action) => clipEntityAdapter.updateMany(action.clips, state)
   ),
   on(ClipActions.deleteClip,
-    (state, action) => adapter.removeOne(action.id, state)
+    (state, action) => clipEntityAdapter.removeOne(action.id, state)
   ),
   on(ClipActions.deleteClips,
-    (state, action) => adapter.removeMany(action.ids, state)
+    (state, action) => clipEntityAdapter.removeMany(action.ids, state)
   ),
   on(ClipActions.loadClips,
-    (state, action) => adapter.setAll(action.clips, state)
+    (state, action) => clipEntityAdapter.setAll(action.clips, state)
   ),
   on(ClipActions.clearClips,
-    state => adapter.removeAll(state)
+    state => clipEntityAdapter.removeAll(state)
   ),
 );
-
-
-export const {
-  selectIds,
-  selectEntities,
-  selectAll,
-  selectTotal,
-} = adapter.getSelectors();
