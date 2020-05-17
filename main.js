@@ -13,7 +13,8 @@ function createWindow() {
     }
   });
 
-  win.loadURL(`file://${__dirname}/dist/crossclip/index.html`);
+  // win.loadURL(`file://${__dirname}/dist/crossclip/index.html`);
+  win.loadURL(`file://${__dirname}/dist/crossclip-electron/index.html`); // Try this out for dev
 
   win.on('closed', () => {
     win = null;

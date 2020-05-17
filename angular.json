@@ -64,6 +64,11 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "ngsw-config.json"
+            },
+            "electronDev": {
+              "sourceMap": true,
+              "serviceWorker": false,
+              "outputPath": "dist/crossclip-electron"
             }
           }
         },
