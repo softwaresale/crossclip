@@ -6,8 +6,8 @@ let clipboardWorker;
 
 function createWindow() {
   win = new BrowserWindow({
-    width: 600,
-    height: 400,
+    width: 1200,
+    height: 800,
     webPreferences: {
       nodeIntegration: true,
     }
@@ -17,6 +17,7 @@ function createWindow() {
 
   win.on('closed', () => {
     win = null;
+    clipboardWorker.close();
     clipboardWorker = null;
   });
 }

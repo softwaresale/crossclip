@@ -29,3 +29,15 @@ export const clipsSelectTotal = createSelector(
   selectClipFeatureState,
   selectTotal
 );
+
+export const clipsSelectSortedByDate = createSelector(
+  clipsSelectAll,
+  clips => clips.sort(
+    (left, right) => left.created.toDate().getTime() - right.created.toDate().getTime()
+  )
+);
+
+export const clipsSelectReversed = createSelector(
+  clipsSelectAll,
+  clips => clips.reverse()
+);

@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from "./app.component";
-
+import { LocalClipsDisplayComponent } from "./local-clips-display/local-clips-display.component";
 
 const routes: Routes = [
   {
-    path: '',
-    component: AppComponent,
+    path: 'local',
+    component: LocalClipsDisplayComponent,
+  },
+  {
+    'path': '',
+    pathMatch: 'full',
+    redirectTo: '/local'
   }
 ];
 

@@ -1,0 +1,29 @@
+
+<mat-list-item class="custom-mat-list-item">
+  <div class="main-content">
+    <div class="meta-data-container">
+      <p class="mat-caption">
+        <span class="meta-data-displays">
+          Created
+          &#8226;
+          {{ clip.created.toDate() | date }}
+        </span>
+        <span class="meta-data-displays">
+          Type
+           &#8226;
+          {{ clip.clipType }}
+         </span>
+      </p>
+    </div>
+    <div class="content-container">
+      <p>
+        {{ clip.content }}
+      </p>
+    </div>
+  </div>
+  <div class="actions-box">
+    <button mat-icon-button matTooltip="Copy content to local clipboard" matTooltipShowDelay="1000"><mat-icon>add_circle</mat-icon></button>
+    <button mat-icon-button matTooltip="Sync clipping content with server" matTooltipShowDelay="1000"><mat-icon>cloud_upload</mat-icon></button>
+    <button mat-icon-button matTooltip="Delete clip" matTooltipShowDelay="1000"><mat-icon>remove_circle</mat-icon></button>
+  </div>
+</mat-list-item>

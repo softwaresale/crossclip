@@ -2,12 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from "@ngrx/store";
 import { State } from "./state/state";
 import { clipboardChanged } from "./state/clip/clip.actions";
-import { Clip } from "./state/clip/clip.model";
-import { Observable } from "rxjs";
-import { clipsSelectAll } from "./state/clip/clip.selectors";
 import { ElectronService } from "ngx-electron";
-import { IpcRenderer } from 'electron';
-import { ClipboardWatcherService } from "./clipboard-watcher.service";
 
 @Component({
   selector: 'app-root',
@@ -16,7 +11,16 @@ import { ClipboardWatcherService } from "./clipboard-watcher.service";
 })
 export class AppComponent implements OnInit {
 
-  clips$: Observable<Clip[]>;
+  navEndpoints = [
+    {
+      path: '/local',
+      text: 'Local Clips'
+    },
+    {
+      path: '/remote',
+      text: 'Remote Clips'
+    }
+  ];
 
   constructor(
     private store$: Store<State>,
@@ -24,7 +28,12 @@ export class AppComponent implements OnInit {
   ) {
   }
 
+  /*
+  TODO: consider adding an IPC call to kill the clipboard watcher in the destructor
+   */
+
   ngOnInit(): void {
+    // TODO consider moving this somewhere else
     this.electronService.ipcRenderer.on('clipboard-changed', (event, newText) => {
       console.log('render process: received clipboard changed event');
       console.log(`New text is: ${newText}`);

@@ -14,6 +14,11 @@ import { initialState, reducers } from "./state/state";
 import { AngularFireModule } from "@angular/fire";
 import { ClipEffects } from "./state/clip/clip.effects";
 import { NgxElectronModule } from "ngx-electron";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatButtonModule } from "@angular/material/button";
+import { MatListModule } from "@angular/material/list";
+import { LocalClipsDisplayModule } from "./local-clips-display/local-clips-display.module";
 
 @NgModule({
   declarations: [
@@ -39,7 +44,15 @@ import { NgxElectronModule } from "ngx-electron";
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot([ClipEffects]),
     StoreRouterConnectingModule.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+
+    // Material imports
+    MatToolbarModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatListModule,
+
+    LocalClipsDisplayModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
