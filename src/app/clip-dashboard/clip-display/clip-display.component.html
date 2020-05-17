@@ -1,5 +1,5 @@
 
-<mat-list-item class="custom-mat-list-item">
+<mat-list-item class="custom-mat-list-item mat-elevation-z1">
   <div class="main-content">
     <div class="meta-data-container">
       <p class="mat-caption">
@@ -22,10 +22,10 @@
     </div>
   </div>
   <div class="actions-box">
-    <button mat-icon-button matTooltip="Copy content to local clipboard" matTooltipShowDelay="1000" (click)="onCopyText()"><mat-icon>add_circle</mat-icon></button>
-    <button mat-icon-button matTooltip="Sync clipping content with server" matTooltipShowDelay="1000" (click)="onSyncClip()">
-      <mat-icon>{{ clip.synced ? 'cloud_done' : 'cloud_upload' }}</mat-icon>
-    </button>
-    <button mat-icon-button matTooltip="Delete clip" matTooltipShowDelay="1000" (click)="onRemoveClip()"><mat-icon>remove_circle</mat-icon></button>
+    <app-clip-actions-box
+      (onSetToClipboardAction)="onCopyText()"
+      (onSyncAction)="onSyncClip()"
+      (onRemoveAction)="onRemoveClip()">
+    </app-clip-actions-box>
   </div>
 </mat-list-item>

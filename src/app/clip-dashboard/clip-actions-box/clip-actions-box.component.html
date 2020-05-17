@@ -1,0 +1,28 @@
+
+<div>
+  <ng-container *ngIf="(isSmall$ | async) || (isXSmall$ | async); then menuButton else expandedButtons"></ng-container>
+</div>
+
+<ng-template #expandedButtons>
+  <button mat-icon-button
+          *ngFor="let action of actions"
+          [matTooltip]="action.tooltip"
+          matTooltipShowDelay="1000"
+          (click)="action.emitter.emit()">
+    <mat-icon>{{ action.icon }}</mat-icon>
+  </button>
+</ng-template>
+
+<ng-template #menuButton>
+  <mat-menu #actionMenu="matMenu">
+    <button mat-menu-item
+            *ngFor="let action of actions"
+            [matTooltip]="action.tooltip"
+            matTooltipShowDelay="1000"
+            (click)="action.emitter.emit()">
+      <mat-icon>{{ action.icon }}</mat-icon>
+      <span>{{ action.text }}</span>
+    </button>
+  </mat-menu>
+  <button mat-icon-button [matMenuTriggerFor]="actionMenu"><mat-icon>more_vert</mat-icon></button>
+</ng-template>

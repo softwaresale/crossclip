@@ -22,7 +22,6 @@ export class ClipService {
     reflect that.
      */
     const updatedValue: Clip = { ...clip, synced: true };
-    clip.synced = true;
     // Save the clip
     return from(newDoc.set(updatedValue)).pipe(
       switchMap(() => from(newDoc.get()).pipe(

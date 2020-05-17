@@ -8,9 +8,11 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatCardModule } from "@angular/material/card";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ClipActionsBoxComponent } from './clip-actions-box/clip-actions-box.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
-  declarations: [ClipDashboardComponent, ClipDisplayComponent],
+  declarations: [ClipDashboardComponent, ClipDisplayComponent, ClipActionsBoxComponent],
   imports: [
     CommonModule,
     MatListModule,
@@ -19,6 +21,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatCardModule,
     MatTooltipModule,
     MatSnackBarModule,
+    MatMenuModule,
   ],
   exports: [ClipDashboardComponent],
 })

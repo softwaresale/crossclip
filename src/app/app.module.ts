@@ -21,6 +21,7 @@ import { MatListModule } from "@angular/material/list";
 import { LocalClipsDisplayModule } from "./local-clips-display/local-clips-display.module";
 import { RemoteClipsDisplayModule } from "./remote-clips-display/remote-clips-display.module";
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
 
     // Material imports
+    LayoutModule,
     MatToolbarModule,
     MatSidenavModule,
     MatButtonModule,
