@@ -3,7 +3,6 @@ import { Clip } from "../../state/clip/clip.model";
 import { Store } from '@ngrx/store';
 import { State } from '../../state/state';
 import { handleRemoveClip, syncClip } from '../../state/clip/clip.actions';
-import { ElectronService } from 'ngx-electron';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -18,7 +17,6 @@ export class ClipDisplayComponent implements OnInit {
 
   constructor(
     private store$: Store<State>,
-    private electronService: ElectronService,
     private matSnackbar: MatSnackBar,
   ) { }
 
@@ -29,8 +27,9 @@ export class ClipDisplayComponent implements OnInit {
     this.store$.dispatch(syncClip({ clip: this.clip }));
   }
 
-  onCopyText() {
-    this.electronService.clipboard.writeText(this.clip.content);
+  async onCopyText() {
+    // this.electronService.clipboard.writeText(this.clip.content);
+    await navigator.clipboard.writeText(this.clip.content);
     this.matSnackbar.open('Copied text to clipboard', 'CLOSE', {
       duration: 2000,
     });

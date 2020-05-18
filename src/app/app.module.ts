@@ -13,7 +13,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { initialState, reducers } from "./state/state";
 import { AngularFireModule } from "@angular/fire";
 import { ClipEffects } from "./state/clip/clip.effects";
-import { NgxElectronModule } from "ngx-electron";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatButtonModule } from "@angular/material/button";
@@ -22,6 +21,8 @@ import { LocalClipsDisplayModule } from "./local-clips-display/local-clips-displ
 import { RemoteClipsDisplayModule } from "./remote-clips-display/remote-clips-display.module";
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { LayoutModule } from '@angular/cdk/layout';
+import { MatIconModule } from '@angular/material/icon';
+import { ConnectionServiceModule } from 'ng-connection-service';
 
 @NgModule({
   declarations: [
@@ -31,24 +32,24 @@ import { LayoutModule } from '@angular/cdk/layout';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    StoreModule.forRoot(reducers, { initialState }),
+    StoreModule.forRoot(reducers, {initialState}),
     // TODO consider putting this in environment
     AngularFireModule.initializeApp({
-      apiKey: "AIzaSyCKDvqohDwPW-Up1ZgQzASqUWDX8QfCA4s",
-      authDomain: "crossclip.firebaseapp.com",
-      databaseURL: "https://crossclip.firebaseio.com",
-      projectId: "crossclip",
-      storageBucket: "crossclip.appspot.com",
-      messagingSenderId: "447960949346",
-      appId: "1:447960949346:web:6a1575386630710539673b",
-      measurementId: "G-4VZZLXSVKJ"
+      apiKey: 'AIzaSyCKDvqohDwPW-Up1ZgQzASqUWDX8QfCA4s',
+      authDomain: 'crossclip.firebaseapp.com',
+      databaseURL: 'https://crossclip.firebaseio.com',
+      projectId: 'crossclip',
+      storageBucket: 'crossclip.appspot.com',
+      messagingSenderId: '447960949346',
+      appId: '1:447960949346:web:6a1575386630710539673b',
+      measurementId: 'G-4VZZLXSVKJ'
     }),
     AngularFirestoreModule,
-    NgxElectronModule,
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot([ClipEffects]),
     StoreRouterConnectingModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+    ConnectionServiceModule,
 
     // Material imports
     LayoutModule,
@@ -56,6 +57,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatSidenavModule,
     MatButtonModule,
     MatListModule,
+    MatIconModule,
 
     // Local UI modules
     LocalClipsDisplayModule,

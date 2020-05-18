@@ -1,17 +1,25 @@
 
 <div class="container">
   <mat-toolbar color="primary">
+    <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
     <span>Crossclip</span>
+    <span style="flex: 1 1 auto"><!-- Fill middle --></span>
+    <mat-icon *ngIf="offline$ | async">offline_bolt</mat-icon>
   </mat-toolbar>
   <div style="height: 90%">
     <mat-sidenav-container class="container">
       <mat-sidenav
-        mode="side"
+        #sidenav
+        [mode]="(isSmall$ | async) ? 'over' : 'side'"
+        [opened]="!(isSmall$ | async)"
         fixedInViewport="true"
-        fixedTopGap="64"
-        opened>
+        fixedTopGap="64">
         <mat-nav-list>
-          <a mat-list-item *ngFor="let navItem of navEndpoints" [routerLink]="[navItem.path]">
+          <a mat-list-item
+             *ngFor="let navItem of navEndpoints"
+             [routerLink]="[navItem.path]"
+             [disabled]="navItem.disableOffline && (offline$ | async)">
+            <mat-icon style="margin-right: 8px">{{ navItem.icon }}</mat-icon>
             {{ navItem.text | titlecase }}
           </a>
         </mat-nav-list>

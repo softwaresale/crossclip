@@ -13,6 +13,9 @@
            &#8226;
           {{ clip.clipType }}
          </span>
+        <span class="meta-data-displays">
+          <mat-icon *ngIf="clip.synced" inline="true">cloud_done</mat-icon>
+        </span>
       </p>
     </div>
     <div class="content-container">

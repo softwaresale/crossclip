@@ -3,10 +3,10 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as ClipActions from "./clip.actions";
 import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { ClipService } from "./clip.service";
-import { addClip, deleteClip, updateClip, upsertClip } from './clip.actions';
+import { addClip, deleteClip, updateClip } from './clip.actions';
 import { Clip } from "./clip.model";
 import { firestore } from 'firebase';
-import { v1 } from 'uuid';
+import { v4 } from 'uuid';
 import { Update } from '@ngrx/entity';
 import { of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
@@ -27,7 +27,7 @@ export class ClipEffects {
         return updateClip({ clip: { id: existingClip.id, changes: updatedTimestamp } });
       } else {
         const newClip: Clip = {
-          id: v1(),
+          id: v4(),
           content: action.text,
           clipType: 'text/plain',
           created: firestore.Timestamp.now(),

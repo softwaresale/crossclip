@@ -8,6 +8,7 @@
           *ngFor="let action of actions"
           [matTooltip]="action.tooltip"
           matTooltipShowDelay="1000"
+          [disabled]="action.disableOffline && (offline$ | async)"
           (click)="action.emitter.emit()">
     <mat-icon>{{ action.icon }}</mat-icon>
   </button>

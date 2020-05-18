@@ -1,15 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ElectronService } from 'ngx-electron';
 import { select, Store } from '@ngrx/store';
 import { State } from '../../state/state';
 import { Observable } from 'rxjs';
-import { appStateSelectSizeSmall, appStateSelectSizeXSmall } from '../../state/app-state/app-state.selectors';
+import {
+  appStateSelectIsConnected,
+  appStateSelectSizeSmall,
+  appStateSelectSizeXSmall
+} from '../../state/app-state/app-state.selectors';
+import { map } from 'rxjs/operators';
 
 interface ClipAction {
   text: string;
   tooltip: string;
   emitter: EventEmitter<void>;
   icon: string;
+  disableOffline: boolean;
 }
 
 @Component({
@@ -26,11 +31,11 @@ export class ClipActionsBoxComponent implements OnInit {
 
   isSmall$: Observable<boolean>;
   isXSmall$: Observable<boolean>;
+  offline$: Observable<boolean>;
 
   actions: Array<ClipAction>;
 
   constructor(
-    private electronService: ElectronService,
     private store$: Store<State>,
   ) { }
 
@@ -45,19 +50,22 @@ export class ClipActionsBoxComponent implements OnInit {
         text: 'Set to Clipboard',
         tooltip: 'Set this clipping to the clipboard',
         emitter: this.onSetToClipboardAction,
-        icon: 'add_circle'
+        icon: 'add_circle',
+        disableOffline: false,
       },
       {
         text: 'Sync',
         tooltip: 'Synchronize clipping with cloud',
         emitter: this.onSyncAction,
         icon: this.synced ? 'cloud_done' : 'cloud_upload',
+        disableOffline: true,
       },
       {
         text: 'Remove',
         tooltip: 'Delete this clipping',
         emitter: this.onRemoveAction,
-        icon: 'remove_circle'
+        icon: 'remove_circle',
+        disableOffline: false,
       }
     ];
 
@@ -67,6 +75,11 @@ export class ClipActionsBoxComponent implements OnInit {
 
     this.isXSmall$ = this.store$.pipe(
       select(appStateSelectSizeXSmall),
+    );
+
+    this.offline$ = this.store$.pipe(
+      select(appStateSelectIsConnected),
+      map(connected => !connected)
     );
   }
 

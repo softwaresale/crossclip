@@ -23,3 +23,8 @@ export const appStateSelectSizeXSmall = createSelector(
   appStateSelectBreakpointState,
   breakpointState => breakpointState.breakpoints[Breakpoints.XSmall],
 );
+
+export const appStateSelectIsConnected = createSelector(
+  selectAppStateFeature,
+  state => state.networkConnected
+);

@@ -3,7 +3,7 @@ import { State } from "../state/state";
 import { select, Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { Clip } from "../state/clip/clip.model";
-import { clipsSelectAll, clipsSelectReversed, clipsSelectSortedByDate } from "../state/clip/clip.selectors";
+import { clipsSelectAll } from "../state/clip/clip.selectors";
 
 @Component({
   selector: 'app-local-clips-display',
