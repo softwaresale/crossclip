@@ -12,7 +12,7 @@
       <mat-sidenav
         #sidenav
         [mode]="(isSmall$ | async) ? 'over' : 'side'"
-        [opened]="!(isSmall$ | async)"
+        [opened]="!(isSmall$ | async) && !(userLoggedOut$ | async)"
         fixedInViewport="true"
         fixedTopGap="64">
         <mat-nav-list>

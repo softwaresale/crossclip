@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { State } from "./state/state";
-import { clipboardChanged } from "./state/clip/clip.actions";
+import { State } from './state/state';
+import { clipboardChanged } from './state/clip/clip.actions';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { networkStatusChanged, setBreakpointState } from './state/app-state/app-
 import { ClipboardWatcherService } from './clipboard-watcher/clipboard-watcher.service';
 import { ConnectionService } from 'ng-connection-service';
 import { appStateSelectBreakpointState, appStateSelectIsConnected } from './state/app-state/app-state.selectors';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void>;
   offline$: Observable<boolean>;
   isSmall$: Observable<boolean>;
+  userLoggedOut$: Observable<boolean>;
 
   navEndpoints = [
     {
@@ -41,6 +43,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private clipboardWatcherService: ClipboardWatcherService,
     private connectionService: ConnectionService,
+    private angularFireAuth: AngularFireAuth,
   ) {
   }
 
@@ -79,6 +82,9 @@ export class AppComponent implements OnInit, OnDestroy {
       select(appStateSelectBreakpointState),
       map(state => state.breakpoints[Breakpoints.Small] || state.breakpoints[Breakpoints.XSmall]),
     );
+
+    // Watch if the user is logged in or not
+    this.userLoggedOut$ = this.angularFireAuth.user.pipe(map(user => !user));
   }
 
   ngOnDestroy(): void {
