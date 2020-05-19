@@ -25,6 +25,19 @@ $crossclip-theme: mat-light-theme($crossclip-primary, $crossclip-accent, $crossc
 // that you are using.
 @include angular-material-theme($crossclip-theme);
 
+// Custom classes to use colors
+.app-primary-color {
+  color: mat-color($crossclip-primary) !important;
+}
+
+.app-accent-color {
+  color: mat-color($crossclip-accent) !important;
+}
+
+.app-warn-color {
+  color: mat-color($crossclip-warn) !important;
+}
+
 html, body {
   height: 100%;
 }

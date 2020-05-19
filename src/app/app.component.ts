@@ -61,7 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     // Watch the breakpoint
-    this.breakpointObserver.observe([ Breakpoints.Large, Breakpoints.Small, Breakpoints.XSmall ])
+    this.breakpointObserver.observe([ Breakpoints.Large, Breakpoints.Small, Breakpoints.XSmall, Breakpoints.Handset ])
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(state => this.store$.dispatch(setBreakpointState({ breakpointState: state })));
 

@@ -1,0 +1,37 @@
+<div [ngClass]="{ 'desktop-container': !(this.isMobile$ | async), 'mobile-container': this.isMobile$ | async }">
+  <div class="login-info-box">
+    <h1>Login to Crossclip</h1>
+  </div>
+  <div class="login-form">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div class="forms-container">
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email">
+          <mat-error *ngIf="emailControl.errors?.required">Field is required</mat-error>
+          <mat-error *ngIf="emailControl.errors?.email">Value must be a valid email address</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password">
+          <mat-error *ngIf="passwordControl.errors?.required">Field is required</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">LOGIN</button>
+        <mat-progress-bar *ngIf="isSubmitted$ | async" color="accent" mode="indeterminate"></mat-progress-bar>
+      </div>
+    </form>
+  </div>
+  <div class="login-status-box" *ngIf="!!(errorText$ | async)">
+    <h3>Error while logging in:</h3>
+    <h4 class="app-warn-color">{{ errorText$ | async }}</h4>
+  </div>
+  <div class="providers-box">
+    <h3>Or Sign in with</h3>
+    <div class="provider-btn-box">
+      <button mat-raised-button class="provider-btn" (click)="onGoogleLogin()">
+        <mat-icon svgIcon="google_logo"></mat-icon>
+        Google
+      </button>
+    </div>
+  </div>
+</div>

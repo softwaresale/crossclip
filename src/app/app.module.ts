@@ -23,6 +23,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatIconModule } from '@angular/material/icon';
 import { ConnectionServiceModule } from 'ng-connection-service';
+import { AuthModule } from './auth/auth.module';
+import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { ConnectionServiceModule } from 'ng-connection-service';
       measurementId: 'G-4VZZLXSVKJ'
     }),
     AngularFirestoreModule,
+    AngularFireAuthGuardModule,
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot([ClipEffects]),
     StoreRouterConnectingModule.forRoot(),
@@ -62,6 +65,7 @@ import { ConnectionServiceModule } from 'ng-connection-service';
     // Local UI modules
     LocalClipsDisplayModule,
     RemoteClipsDisplayModule,
+    AuthModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

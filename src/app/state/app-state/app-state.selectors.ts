@@ -24,6 +24,18 @@ export const appStateSelectSizeXSmall = createSelector(
   breakpointState => breakpointState.breakpoints[Breakpoints.XSmall],
 );
 
+export const appStateSelectMobile = createSelector(
+  appStateSelectBreakpointState,
+  breakpointState => breakpointState.breakpoints[Breakpoints.Handset]
+);
+
+export const appStateSelectAnySmall = createSelector(
+  appStateSelectSizeXSmall,
+  appStateSelectSizeSmall,
+  appStateSelectMobile,
+  (xsmall, small, mobile) => xsmall || small || mobile
+);
+
 export const appStateSelectIsConnected = createSelector(
   selectAppStateFeature,
   state => state.networkConnected
