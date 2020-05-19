@@ -10,21 +10,22 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { initialState, reducers } from "./state/state";
-import { AngularFireModule } from "@angular/fire";
-import { ClipEffects } from "./state/clip/clip.effects";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatSidenavModule } from "@angular/material/sidenav";
-import { MatButtonModule } from "@angular/material/button";
-import { MatListModule } from "@angular/material/list";
-import { LocalClipsDisplayModule } from "./local-clips-display/local-clips-display.module";
-import { RemoteClipsDisplayModule } from "./remote-clips-display/remote-clips-display.module";
+import { initialState, reducers } from './state/state';
+import { AngularFireModule } from '@angular/fire';
+import { ClipEffects } from './state/clip/clip.effects';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { LocalClipsDisplayModule } from './local-clips-display/local-clips-display.module';
+import { RemoteClipsDisplayModule } from './remote-clips-display/remote-clips-display.module';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatIconModule } from '@angular/material/icon';
 import { ConnectionServiceModule } from 'ng-connection-service';
 import { AuthModule } from './auth/auth.module';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
+import { ProfileButtonModule } from './auth/profile-button/profile-button.module';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
     LocalClipsDisplayModule,
     RemoteClipsDisplayModule,
     AuthModule,
+    ProfileButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

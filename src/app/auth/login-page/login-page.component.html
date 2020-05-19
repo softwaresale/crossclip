@@ -5,13 +5,13 @@
   <div class="login-form">
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <div class="forms-container">
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
           <input matInput type="email" formControlName="email">
           <mat-error *ngIf="emailControl.errors?.required">Field is required</mat-error>
           <mat-error *ngIf="emailControl.errors?.email">Value must be a valid email address</mat-error>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
           <input matInput type="password" formControlName="password">
           <mat-error *ngIf="passwordControl.errors?.required">Field is required</mat-error>
