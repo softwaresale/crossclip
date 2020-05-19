@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { State } from "../state/state";
-import { select, Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { Clip } from "../state/clip/clip.model";
-import { clipsSelectAll } from "../state/clip/clip.selectors";
+import { State } from '../state/state';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Clip } from '../state/clip/clip.model';
+import { clipsSelectAll } from '../state/clip/clip.selectors';
 
 @Component({
   selector: 'app-local-clips-display',
@@ -13,6 +13,7 @@ import { clipsSelectAll } from "../state/clip/clip.selectors";
 export class LocalClipsDisplayComponent implements OnInit {
 
   clips$: Observable<Clip[]>;
+  emptyDashMsg = 'When you copy or cut something, it will show up here';
 
   constructor(private store$: Store<State>) { }
 

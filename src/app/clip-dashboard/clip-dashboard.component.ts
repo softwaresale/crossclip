@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Clip } from "../state/clip/clip.model";
+import { Clip } from '../state/clip/clip.model';
 
 @Component({
   selector: 'app-clip-dashboard',
@@ -10,6 +10,11 @@ export class ClipDashboardComponent implements OnInit {
 
   @Input()
   clips: Clip[];
+
+  @Input()
+  emptyDescription: string;
+
+  get clipsEmpty(): boolean { return this.clips.length === 0 }
 
   constructor() { }
 

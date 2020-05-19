@@ -1,4 +1,8 @@
 
 <mat-list>
   <app-clip-display *ngFor="let clip of clips" [clip]="clip"></app-clip-display>
+  <mat-list-item class="display-empty" *ngIf="clipsEmpty">
+    <h2 mat-line>Your Clipboard is Empty</h2>
+    <h4 mat-line id="description-text">{{ emptyDescription }}</h4>
+  </mat-list-item>
 </mat-list>
