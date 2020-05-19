@@ -1,0 +1,16 @@
+
+<div [ngClass]="{ 'desktop-container': !(this.isMobile$ | async), 'mobile-container': this.isMobile$ | async }">
+  <div class="profile-info-box">
+    <img src="{{ (user$ | async)?.photoURL }}" class="avatar" alt="Profile Picture">
+    <h1 class="display-name">{{ (user$ | async)?.displayName }}</h1>
+    <button mat-stroked-button color="warn" (click)="onLogout()">LOG OUT</button>
+  </div>
+  <div class="profile-actions-container">
+    <p class="mat-caption">Profile Actions</p>
+    <div [ngClass]="{'actions-box-row': !(isMobile$ | async), 'actions-box-column': isMobile$ | async }">
+      <a mat-stroked-button [routerLink]="['/remote']" class="actions-box-btn">CLIPS</a>
+      <button mat-stroked-button class="actions-box-btn">EDIT PROFILE</button>
+      <button mat-stroked-button color="warn" class="actions-box-btn">DELETE PROFILE</button>
+    </div>
+  </div>
+</div>

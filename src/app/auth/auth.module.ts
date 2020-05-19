@@ -12,9 +12,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SignupPageComponent } from './signup-page/signup-page.component';
 import { RouterModule } from '@angular/router';
+import { ProfileViewComponent } from './profile-view/profile-view.component';
 
 @NgModule({
-  declarations: [LoginPageComponent, SignupPageComponent],
+  declarations: [LoginPageComponent, SignupPageComponent, ProfileViewComponent],
   imports: [
     CommonModule,
     AngularFireAuthModule,

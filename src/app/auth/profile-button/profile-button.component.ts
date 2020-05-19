@@ -38,13 +38,7 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit {
     this.isLoggedIn$ = this.angularFireAuth.authState.pipe(map(user => !!user));
     this.displayName$ = this.angularFireAuth.user.pipe(map(user => user.displayName));
     this.userProfileUrl$ = this.angularFireAuth.user.pipe(
-      map(user => {
-        if (!user.photoURL) {
-          return ProfileButtonComponent.createTempAvatarFromSeed(user.uid);
-        } else {
-          return user.photoURL;
-        }
-      }),
+      map(user => user.photoURL),
     );
   }
 
@@ -95,7 +89,8 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit {
     this.angularFireAuth.signOut().then(() => this.router.navigate(['/login']));
   }
 
-  private static createTempAvatarFromSeed(seed: string) {
-    return `https://avatars.dicebear.com/api/identicon/${seed}.svg`;
+  handleProfile() {
+    this.overlayRef.dispose();
+    this.router.navigate(['/profile']);
   }
 }

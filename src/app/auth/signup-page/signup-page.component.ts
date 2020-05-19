@@ -61,9 +61,13 @@ export class SignupPageComponent implements OnInit, OnDestroy {
     }, { validators: verifyPasswordMatch });
   }
 
-  private handleSuccess(credentials: auth.UserCredential) {
+  private handleSuccess(credentials: auth.UserCredential | string) {
     this.router.navigate(['/local']);
-    this.matSnackBar.open(`Welcome ${credentials.user.displayName}`, 'CLOSE');
+    if (typeof credentials === 'string') {
+      this.matSnackBar.open(`Welcome ${credentials}`, 'CLOSE');
+    } else {
+      this.matSnackBar.open(`Welcome ${credentials.user.displayName}`, 'CLOSE');
+    }
   }
 
   private handleError(error: any) {
@@ -83,11 +87,10 @@ export class SignupPageComponent implements OnInit, OnDestroy {
       const { email, password, displayName } = this.signupForm.value;
       this.angularFireAuth.createUserWithEmailAndPassword(email, password)
         .then(creds => {
-          if (!!displayName) {
-            return creds.user.updateProfile({ displayName }).then(() => this.handleSuccess(creds))
-          } else {
-            return this.handleSuccess(creds);
-          }
+          const photoURL = SignupPageComponent.createTempAvatarFromSeed(creds.user.email);
+          return this.angularFireAuth.currentUser.then(user =>
+            user.updateProfile({ photoURL, displayName }).then(() => this.handleSuccess(displayName))
+          )
         })
         .catch(error => this.handleError(error));
     }
@@ -97,5 +100,9 @@ export class SignupPageComponent implements OnInit, OnDestroy {
     this.angularFireAuth.signInWithPopup(new auth.GoogleAuthProvider())
       .then(creds => this.handleSuccess(creds))
       .catch(error => this.handleError(error));
+  }
+
+  private static createTempAvatarFromSeed(seed: string) {
+    return `https://avatars.dicebear.com/api/identicon/${seed}.svg`;
   }
 }

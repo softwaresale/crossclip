@@ -1,0 +1,49 @@
+
+.desktop-container
+  width: 45%
+  margin: auto
+  padding: 8px
+
+.mobile-container
+  width: 95%
+  margin: auto
+  padding: 8px
+
+.profile-info-box
+  display: flex
+  align-items: center
+  flex-direction: column
+
+.avatar
+  height: 80px
+  width: 80px
+  border-radius: 50%
+  object-fit: cover
+  flex-shrink: 0
+  border-style: ridge
+
+.display-name
+  margin-top: 16px
+
+.profile-actions-container
+  margin-top: 16px
+  text-align: center
+
+.actions-box-base
+  display: flex
+  align-items: center
+  text-align: center
+
+.actions-box-row
+  @extend .actions-box-base
+  flex-direction: row
+
+.actions-box-row > a, button
+  margin-right: 8px
+
+.actions-box-column
+  @extend .actions-box-base
+  flex-direction: column
+
+.actions-box-column > a, button
+  margin-top: 8px

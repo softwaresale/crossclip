@@ -35,6 +35,12 @@ export class AppComponent implements OnInit, OnDestroy {
       text: 'Remote Clips',
       icon: 'cloud',
       disableOffline: true,
+    },
+    {
+      path: '/profile',
+      text: 'Profile',
+      icon: 'account_circle',
+      disableOffline: false,
     }
   ];
 
