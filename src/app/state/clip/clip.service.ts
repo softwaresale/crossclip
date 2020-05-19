@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from "@angular/fire/firestore";
-import { Clip } from "./clip.model";
-import { firestore } from 'firebase';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Clip } from './clip.model';
 import { from, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ export class ClipService {
 
   constructor(
     private firestore: AngularFirestore,
+    private auth: AngularFireAuth,
   ) { }
 
   syncClip(clip: Clip): Observable<Clip> {
@@ -21,11 +22,18 @@ export class ClipService {
     TODO might have to change this because the SSOT is the cloud, so the synced state should
     reflect that.
      */
-    const updatedValue: Clip = { ...clip, synced: true };
+
     // Save the clip
-    return from(newDoc.set(updatedValue)).pipe(
-      switchMap(() => from(newDoc.get()).pipe(
-        map(value => value.data() as Clip)
+    return this.auth.user.pipe(
+      // Only take one. No need to take a lot
+      take(1),
+      // Map user into updated clip value
+      map(user => ({ ...clip, synced: true, uid: user.uid })),
+      // actually upload the clipping
+      switchMap(updatedValue => from(newDoc.set(updatedValue)).pipe(
+        switchMap(() => from(newDoc.get()).pipe(
+          map(value => value.data() as Clip)
+        ))
       ))
     );
   }
