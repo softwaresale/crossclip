@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { LocalClipsDisplayComponent } from "./local-clips-display/local-clips-display.component";
-import { RemoteClipsDisplayComponent } from "./remote-clips-display/remote-clips-display.component";
+import { RouterModule, Routes } from '@angular/router';
+import { LocalClipsDisplayComponent } from './local-clips-display/local-clips-display.component';
+import { RemoteClipsDisplayComponent } from './remote-clips-display/remote-clips-display.component';
 import { LoginPageComponent } from './auth/login-page/login-page.component';
 import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+import { SignupPageComponent } from './auth/signup-page/signup-page.component';
 
 const redirectToLoginPage = () => redirectUnauthorizedTo(['login']);
 
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginPageComponent,
+  },
+  {
+    path: 'signup',
+    component: SignupPageComponent,
   },
   {
     path: 'local',

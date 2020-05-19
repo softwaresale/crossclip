@@ -5,21 +5,22 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { SignupPageComponent } from './signup-page/signup-page.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [LoginPageComponent],
+  declarations: [LoginPageComponent, SignupPageComponent],
   imports: [
     CommonModule,
     AngularFireAuthModule,
     HttpClientModule,
     ReactiveFormsModule,
+    RouterModule,
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
