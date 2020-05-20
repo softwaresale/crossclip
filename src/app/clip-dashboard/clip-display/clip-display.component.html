@@ -24,9 +24,24 @@
   </div>
   <div class="actions-box">
     <app-clip-actions-box
+      [synced]="clip.synced"
       (onSetToClipboardAction)="onCopyText()"
       (onSyncAction)="onSyncClip()"
       (onRemoveAction)="onRemoveClip()">
     </app-clip-actions-box>
   </div>
 </mat-list-item>
+
+<ng-template #confirmDeleteSyncTemplate>
+  <h1 mat-dialog-title>Are You Sure?</h1>
+  <div mat-dialog-content>
+    <h3>Are you sure that you want to delete this clip from the server?</h3>
+    <p>
+      If you cancel, the clip will still be removed from the local clips list. However, it will be persisted remotely.
+    </p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-stroked-button [mat-dialog-close]="false">CANCEL</button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">DELETE</button>
+  </div>
+</ng-template>

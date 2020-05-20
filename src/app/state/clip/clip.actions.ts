@@ -15,7 +15,7 @@ export const syncClip = createAction(
 
 export const handleRemoveClip = createAction(
   '[Clip/API] Removing clip',
-  props<{ clip: Clip }>(),
+  props<{ clip: Clip, deleteRemote?: boolean }>(),
 );
 
 export const loadClips = createAction(

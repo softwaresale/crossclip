@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import * as ClipActions from "./clip.actions";
-import { map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { ClipService } from "./clip.service";
+import * as ClipActions from './clip.actions';
 import { addClip, deleteClip, updateClip } from './clip.actions';
-import { Clip } from "./clip.model";
+import { map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { ClipService } from './clip.service';
+import { Clip } from './clip.model';
 import { firestore } from 'firebase';
 import { v4 } from 'uuid';
 import { Update } from '@ngrx/entity';
@@ -56,8 +56,9 @@ export class ClipEffects {
   handleRemoveClip$ = createEffect(() => this.actions$.pipe(
     ofType(ClipActions.handleRemoveClip),
     switchMap(action => {
-      if (action.clip.synced) {
-        // If clip is sycned with cloud, it needs to be deleted there too
+      if (action.clip.synced && action.deleteRemote) {
+        // If clip is synced with cloud, it needs to be deleted there too
+        // Has to be told to do so though
         return this.clipService.deleteRemoteClip(action.clip).pipe(
           map(id => deleteClip({ id }))
         );
