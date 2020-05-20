@@ -11,11 +11,15 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ClipActionsBoxComponent } from './clip-actions-box/clip-actions-box.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [ClipDashboardComponent, ClipDisplayComponent, ClipActionsBoxComponent],
   imports: [
     CommonModule,
+    BrowserModule,
+    BrowserAnimationsModule,
     MatListModule,
     MatButtonModule,
     MatIconModule,

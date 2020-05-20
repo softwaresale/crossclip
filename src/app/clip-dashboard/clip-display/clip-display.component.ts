@@ -5,11 +5,23 @@ import { State } from '../../state/state';
 import { handleRemoveClip, syncClip } from '../../state/clip/clip.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-clip-display',
   templateUrl: './clip-display.component.html',
-  styleUrls: ['./clip-display.component.sass']
+  styleUrls: ['./clip-display.component.sass'],
+  animations: [
+    trigger('fadeClip', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('200ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('200ms', style({ opacity: 0 })),
+      ])
+    ])
+  ]
 })
 export class ClipDisplayComponent implements OnInit {
 
