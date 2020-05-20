@@ -14,7 +14,7 @@
         [mode]="(isSmall$ | async) ? 'over' : 'side'"
         [opened]="!(isSmall$ | async) && !(userLoggedOut$ | async)"
         fixedInViewport="true"
-        fixedTopGap="64">
+        [fixedTopGap]="(isSmall$ | async) ? 56 : 64">
         <mat-nav-list>
           <a mat-list-item
              *ngFor="let navItem of navEndpoints"
