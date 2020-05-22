@@ -19,7 +19,11 @@
       </p>
     </div>
     <div class="content-container">
-      <pre>{{ clip.content }}</pre>
+      <!--
+      Trim text because leading spaces affect the padding/white space of the window. Makes things
+      more uniform
+       -->
+      <pre>{{ clip.content.trim() }}</pre>
     </div>
   </div>
   <div class="actions-box">
