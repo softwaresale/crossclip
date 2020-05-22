@@ -26,6 +26,7 @@ import { ConnectionServiceModule } from 'ng-connection-service';
 import { AuthModule } from './auth/auth.module';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 import { ProfileButtonModule } from './auth/profile-button/profile-button.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ProfileButtonModule } from './auth/profile-button/profile-button.module
     MatButtonModule,
     MatListModule,
     MatIconModule,
+    MatSnackBarModule,
 
     // Local UI modules
     LocalClipsDisplayModule,

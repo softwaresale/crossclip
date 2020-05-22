@@ -4,12 +4,14 @@ import { State } from './state/state';
 import { clipboardChanged } from './state/clip/clip.actions';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { networkStatusChanged, setBreakpointState } from './state/app-state/app-state.actions';
 import { ClipboardWatcherService } from './clipboard-watcher/clipboard-watcher.service';
 import { ConnectionService } from 'ng-connection-service';
 import { appStateSelectBreakpointState, appStateSelectIsConnected } from './state/app-state/app-state.selectors';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { SwUpdate } from '@angular/service-worker';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -50,6 +52,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private clipboardWatcherService: ClipboardWatcherService,
     private connectionService: ConnectionService,
     private angularFireAuth: AngularFireAuth,
+    private swUpdate: SwUpdate,
+    private matSnackBar: MatSnackBar,
   ) {
   }
 
@@ -61,6 +65,26 @@ export class AppComponent implements OnInit, OnDestroy {
     // Create the unsubscribe subject
     this.unsubscribe$ = new Subject<void>();
     this.offline$ = new BehaviorSubject<boolean>(false);
+
+    // Watch for application updates from the sw
+    this.swUpdate.available
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        switchMap(() => this.matSnackBar.open('Crossclip has an update available', 'UPGRADE').afterDismissed())
+       )
+      .subscribe(shouldUpdate => {
+        if (shouldUpdate) {
+          this.swUpdate.activateUpdate().then(() => document.location.reload())
+        }
+      });
+
+    this.swUpdate.activated
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.matSnackBar.open('Crossclip was updated', 'CLOSE', {
+          duration: 3000
+        })
+      });
 
     // TODO consider moving this somewhere else
     // Watch for clipboard changes
