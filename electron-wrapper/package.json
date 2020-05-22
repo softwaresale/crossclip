@@ -1,8 +1,8 @@
 {
-  "name": "electron-wrapper",
-  "productName": "electron-wrapper",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "name": "crossclip",
+  "productName": "crossclip",
+  "version": "0.0.1",
+  "description": "A cross-platform solution for syncing clipboard content",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -11,7 +11,7 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-  "keywords": [],
+  "keywords": ["pwa", "angular", "electron", "cross-platform", "clipboard"],
   "author": {
     "name": "Charlie Sale",
     "email": "softwaresale01@gmail.com"
