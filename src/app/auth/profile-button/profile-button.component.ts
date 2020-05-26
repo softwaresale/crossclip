@@ -1,10 +1,13 @@
 import { AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { FlexibleConnectedPositionStrategy, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { State } from '../../state/state';
+import { appStateSelectTheme } from '../../state/app-state/app-state.selectors';
 
 @Component({
   selector: 'app-profile-button',
@@ -26,20 +29,29 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit {
   isLoggedIn$: Observable<boolean>;
   displayName$: Observable<string>;
   userProfileUrl$: Observable<string>;
+  private theme: string;
+  private unsubscribe$: Subject<void>;
 
   constructor(
     private angularFireAuth: AngularFireAuth,
     private matOverlay: Overlay,
     private router: Router,
     private viewContainerRef: ViewContainerRef,
+    private store$: Store<State>,
   ) { }
 
   ngOnInit(): void {
+    this.unsubscribe$ = new Subject<void>();
     this.isLoggedIn$ = this.angularFireAuth.authState.pipe(map(user => !!user));
     this.displayName$ = this.angularFireAuth.user.pipe(map(user => user.displayName));
     this.userProfileUrl$ = this.angularFireAuth.user.pipe(
       map(user => user.photoURL),
     );
+    this.store$.pipe(
+      select(appStateSelectTheme),
+      map(isDarkTheme => isDarkTheme ? 'dark-theme' : 'light-theme'),
+      takeUntil(this.unsubscribe$)
+    ).subscribe(theme => this.theme = theme);
   }
 
   ngAfterViewInit(): void {
@@ -72,6 +84,7 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit {
     this.overlayRef = this.matOverlay.create({
       positionStrategy: this.popupPositionStrategy,
       disposeOnNavigation: true,
+      panelClass: this.theme,
     });
     // const popupPortal = new ComponentPortal(ProfileButtonPopupComponent);
     const popupPortal = new TemplatePortal(this.popupContentTemplateRef, this.viewContainerRef);

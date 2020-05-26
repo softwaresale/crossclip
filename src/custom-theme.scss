@@ -18,12 +18,19 @@ $crossclip-accent: mat-palette($mat-amber, A200, A100, A400);
 $crossclip-warn: mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$crossclip-theme: mat-light-theme($crossclip-primary, $crossclip-accent, $crossclip-warn);
+$crossclip-light-theme: mat-light-theme($crossclip-primary, $crossclip-accent, $crossclip-warn);
+$crossclip-dark-theme: mat-dark-theme($crossclip-accent, $crossclip-accent, $crossclip-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($crossclip-theme);
+.light-theme {
+  @include angular-material-theme($crossclip-light-theme);
+}
+
+.dark-theme {
+  @include angular-material-theme($crossclip-dark-theme);
+}
 
 // Custom classes to use colors
 .app-primary-color {

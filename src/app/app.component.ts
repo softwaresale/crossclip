@@ -1,17 +1,27 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { State } from './state/state';
 import { clipboardChanged } from './state/clip/clip.actions';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
-import { networkStatusChanged, setBreakpointState } from './state/app-state/app-state.actions';
+import {
+  networkStatusChanged,
+  setBreakpointState,
+  setDarkTheme,
+  setLightTheme
+} from './state/app-state/app-state.actions';
 import { ClipboardWatcherService } from './clipboard-watcher/clipboard-watcher.service';
 import { ConnectionService } from 'ng-connection-service';
-import { appStateSelectBreakpointState, appStateSelectIsConnected } from './state/app-state/app-state.selectors';
+import {
+  appStateSelectBreakpointState,
+  appStateSelectIsConnected,
+  appStateSelectTheme
+} from './state/app-state/app-state.selectors';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SwUpdate } from '@angular/service-worker';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +29,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit, OnDestroy {
+
+  @HostBinding('class')
+  styleClass: string;
 
   private unsubscribe$: Subject<void>;
   offline$: Observable<boolean>;
@@ -54,6 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private angularFireAuth: AngularFireAuth,
     private swUpdate: SwUpdate,
     private matSnackBar: MatSnackBar,
+    private overlayContainer: OverlayContainer,
   ) {
   }
 
@@ -78,6 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
 
+    // Watch for updates
     this.swUpdate.activated
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
@@ -85,6 +100,27 @@ export class AppComponent implements OnInit, OnDestroy {
           duration: 3000
         })
       });
+
+    // Watch for system theme changes
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      this.store$.dispatch(setDarkTheme());
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      this.store$.dispatch(setLightTheme());
+    }
+
+    this.store$
+      .pipe(select(appStateSelectTheme), takeUntil(this.unsubscribe$))
+      .subscribe(isDarkTheme => {
+        if (isDarkTheme) {
+          this.overlayContainer.getContainerElement().classList.remove('light-theme');
+          this.overlayContainer.getContainerElement().classList.add('dark-theme');
+          this.styleClass = 'dark-theme';
+        } else {
+          this.overlayContainer.getContainerElement().classList.remove('dark-theme');
+          this.overlayContainer.getContainerElement().classList.add('light-theme');
+          this.styleClass = 'light-theme';
+        }
+      })
 
     // TODO consider moving this somewhere else
     // Watch for clipboard changes
