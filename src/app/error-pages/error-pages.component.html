@@ -1,0 +1,12 @@
+<div class="content-container">
+  <mat-card>
+    <mat-card-content>
+      <div class="content-container">
+        <h1>Error!</h1>
+        <div class="errors-container">
+          <app-error-display *ngFor="let error of errors$ | async" [error]="error"></app-error-display>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

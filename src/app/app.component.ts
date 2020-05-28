@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { State } from './state/state';
 import { clipboardChanged } from './state/clip/clip.actions';
@@ -12,13 +12,16 @@ import { appStateSelectBreakpointState, appStateSelectIsConnected } from './stat
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SwUpdate } from '@angular/service-worker';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AppError } from './state/error/app-error.model';
+import { v4 } from 'uuid';
+import { addError } from './state/error/app-error.actions';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private unsubscribe$: Subject<void>;
   offline$: Observable<boolean>;
@@ -115,6 +118,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Watch if the user is logged in or not
     this.userLoggedOut$ = this.angularFireAuth.user.pipe(map(user => !user));
+  }
+
+  ngAfterViewInit(): void {
+    // Create some sort of basic error for testing
+    const genericError: AppError = {
+      causingComponent: 'main app',
+      errorType: 'app',
+      message: 'Dummy Error. Hello World!!',
+      id: v4(),
+    };
+
+    this.store$.dispatch(addError({ error: genericError }));
   }
 
   ngOnDestroy(): void {

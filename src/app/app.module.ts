@@ -27,6 +27,8 @@ import { AuthModule } from './auth/auth.module';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 import { ProfileButtonModule } from './auth/profile-button/profile-button.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AppErrorEffects } from './state/error/app-error.effects';
+import { ErrorPagesModule } from './error-pages/error-pages.module';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     AngularFirestoreModule,
     AngularFireAuthGuardModule,
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-    EffectsModule.forRoot([ClipEffects]),
+    EffectsModule.forRoot([ClipEffects, AppErrorEffects]),
     StoreRouterConnectingModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
     ConnectionServiceModule,
@@ -70,6 +72,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     RemoteClipsDisplayModule,
     AuthModule,
     ProfileButtonModule,
+    ErrorPagesModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

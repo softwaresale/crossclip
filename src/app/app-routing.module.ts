@@ -6,6 +6,7 @@ import { LoginPageComponent } from './auth/login-page/login-page.component';
 import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { SignupPageComponent } from './auth/signup-page/signup-page.component';
 import { ProfileViewComponent } from './auth/profile-view/profile-view.component';
+import { ErrorPagesComponent } from './error-pages/error-pages.component';
 
 const redirectToLoginPage = () => redirectUnauthorizedTo(['login']);
 
@@ -35,6 +36,10 @@ const routes: Routes = [
     component: RemoteClipsDisplayComponent,
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectToLoginPage }
+  },
+  {
+    path: 'errors',
+    component: ErrorPagesComponent,
   },
   {
     'path': '',
