@@ -5,22 +5,29 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { of } from 'rxjs';
+import { AuthService } from '../auth.service';
+import { User } from 'firebase';
 
 describe('ProfileButtonComponent', () => {
   let component: ProfileButtonComponent;
   let fixture: ComponentFixture<ProfileButtonComponent>;
-  let mockAuth: jasmine.SpyObj<AngularFireAuth>;
+  let mockAuth: jasmine.SpyObj<AuthService>;
+  let mockUser = {
+    uid: '1234',
+    photoURL: 'http://helloworld.com/photo',
+  };
 
   beforeEach(async(() => {
-    mockAuth = jasmine.createSpyObj(['signOut'], ['authState', 'user']);
+    mockAuth = jasmine.createSpyObj(['user', 'isAuthenticated', 'signOut']);
+    let mockUserCast = (mockUser as unknown) as User; // a method of getting rid of all the things I don't want
+    mockAuth.user.and.returnValue(of(mockUserCast));
+    mockAuth.isAuthenticated.and.returnValue(of(true));
     mockAuth.signOut.and.resolveTo();
-    spyOnProperty(mockAuth, 'authState').and.returnValue(of({}));
-    spyOnProperty(mockAuth, 'user').and.returnValue(of({}));
 
     TestBed.configureTestingModule({
       declarations: [ ProfileButtonComponent ],
       providers: [
-        { provide: AngularFireAuth, useValue: mockAuth },
+        { provide: AuthService, useValue: mockAuth },
       ],
       imports: [
         OverlayModule,

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Clip } from '../state/clip/clip.model';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { switchMap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-remote-clips-display',
@@ -17,11 +17,11 @@ export class RemoteClipsDisplayComponent implements OnInit {
 
   constructor(
     private firestore: AngularFirestore,
-    private auth: AngularFireAuth,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
-    this.clips$ = this.auth.user.pipe(
+    this.clips$ = this.authService.user().pipe(
       switchMap(user =>
         this.firestore.collection<Clip>('clips', ref => ref.where('uid', '==', user.uid)).valueChanges()
       )

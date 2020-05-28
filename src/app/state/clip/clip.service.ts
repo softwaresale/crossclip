@@ -4,6 +4,7 @@ import { Clip } from './clip.model';
 import { from, Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ClipService {
 
   constructor(
     private firestore: AngularFirestore,
-    private auth: AngularFireAuth,
+    private authService: AuthService,
   ) { }
 
   syncClip(clip: Clip): Observable<Clip> {
@@ -24,7 +25,7 @@ export class ClipService {
      */
 
     // Save the clip
-    return this.auth.user.pipe(
+    return this.authService.user().pipe(
       // Only take one. No need to take a lot
       take(1),
       // Map user into updated clip value

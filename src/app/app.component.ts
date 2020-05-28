@@ -12,6 +12,7 @@ import { appStateSelectBreakpointState, appStateSelectIsConnected } from './stat
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SwUpdate } from '@angular/service-worker';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -51,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private clipboardWatcherService: ClipboardWatcherService,
     private connectionService: ConnectionService,
-    private angularFireAuth: AngularFireAuth,
+    private authService: AuthService,
     private swUpdate: SwUpdate,
     private matSnackBar: MatSnackBar,
   ) {
@@ -114,7 +115,7 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     // Watch if the user is logged in or not
-    this.userLoggedOut$ = this.angularFireAuth.user.pipe(map(user => !user));
+    this.userLoggedOut$ = this.authService.isAuthenticated().pipe(map(isAuth => !isAuth));
   }
 
   ngOnDestroy(): void {
