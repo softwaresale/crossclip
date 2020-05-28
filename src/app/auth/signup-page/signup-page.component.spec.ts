@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SignupPageComponent } from './signup-page.component';
-import { provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore, MockState, MockStore } from '@ngrx/store/testing';
 import { initialState } from 'src/app/state/state';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,11 +10,16 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
+import { MemoizedSelector } from '@ngrx/store';
+import { AppState } from 'src/app/state/app-state/app-state.reducer';
+import { appStateSelectAnySmall } from 'src/app/state/app-state/app-state.selectors';
 
 describe('SignupPageComponent', () => {
   let component: SignupPageComponent;
   let fixture: ComponentFixture<SignupPageComponent>;
   let authSpy: jasmine.SpyObj<AngularFireAuth>;
+  let mockStore: MockStore;
+  let mockSelectAnySmall: MemoizedSelector<AppState, boolean>;
 
   beforeEach(async(() => {
     authSpy = jasmine.createSpyObj(['createUserWithEmailAndPassword']);
@@ -40,6 +45,11 @@ describe('SignupPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SignupPageComponent);
     component = fixture.componentInstance;
+    mockStore = TestBed.inject(MockStore);
+    mockSelectAnySmall = mockStore.overrideSelector(
+      appStateSelectAnySmall,
+      true
+    );
     fixture.detectChanges();
   });
 

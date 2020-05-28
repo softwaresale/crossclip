@@ -6,6 +6,7 @@ import { initialState } from 'src/app/state/state';
 import { MemoizedSelector, Store } from '@ngrx/store';
 import { AppState } from 'src/app/state/app-state/app-state.reducer';
 import { appStateSelectAnySmall } from 'src/app/state/app-state/app-state.selectors';
+import { MatMenuModule } from '@angular/material/menu';
 
 describe('ClipActionsBoxComponent', () => {
   let component: ClipActionsBoxComponent;
@@ -18,6 +19,9 @@ describe('ClipActionsBoxComponent', () => {
       declarations: [ ClipActionsBoxComponent ],
       providers: [
         provideMockStore({ initialState }),
+      ],
+      imports: [
+        MatMenuModule,
       ]
     })
     .compileComponents();
