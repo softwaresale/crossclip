@@ -3,9 +3,9 @@ import { Update } from '@ngrx/entity';
 
 import { AppError } from './app-error.model';
 
-export const loadErrors = createAction(
-  '[Error/API] Load Errors',
-  props<{ errors: AppError[] }>()
+export const errorNetwork = createAction(
+  '[Error/API] Network error encountered',
+  props<{ causingComponent: string, message?: string, content: any }>(),
 );
 
 export const addError = createAction(

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as ClipActions from './clip.actions';
 import { addClip, deleteClip, updateClip } from './clip.actions';
-import { map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, catchError } from 'rxjs/operators';
 import { ClipService } from './clip.service';
 import { Clip } from './clip.model';
 import { firestore } from 'firebase';
@@ -12,6 +12,7 @@ import { of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { State } from '../state';
 import { clipsSelectAll } from './clip.selectors';
+import { errorNetwork } from '../error/app-error.actions';
 
 @Injectable()
 export class ClipEffects {
@@ -50,6 +51,7 @@ export class ClipEffects {
 
         return updateClip({ clip: clipUpdate });
       }),
+      catchError(err => of(errorNetwork({ causingComponent: 'clips effect', content: err }))),
     ))
   ));
 
@@ -60,7 +62,8 @@ export class ClipEffects {
         // If clip is synced with cloud, it needs to be deleted there too
         // Has to be told to do so though
         return this.clipService.deleteRemoteClip(action.clip).pipe(
-          map(id => deleteClip({ id }))
+          map(id => deleteClip({ id })),
+          catchError(err => of(errorNetwork({ causingComponent: 'clips effect', content: err }))),
         );
       } else {
         // Just remove it from the state

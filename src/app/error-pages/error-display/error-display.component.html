@@ -1,5 +1,6 @@
 
 <div>
   <h2 *ngIf="error.causingComponent">Error Found in {{ error.causingComponent | titlecase }}</h2>
-  <pre>{{ error.message }}</pre>
+  <h3>{{ error.message }}</h3>
+  <pre>{{ error.content | json }}</pre>
 </div>
