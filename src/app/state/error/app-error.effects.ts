@@ -10,7 +10,7 @@ export class AppErrorEffects {
   addError$ = createEffect(() => this.actions$.pipe(
     ofType(ErrorActions.addError),
     tap(() => this.router.navigate(['/errors'])),
-  ));
+  ), { dispatch: false });
 
   constructor(
     private actions$: Actions,
