@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LocalClipsDisplayComponent } from './local-clips-display.component';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialState } from '../state/state';
 
 describe('LocalClipsDisplayComponent', () => {
   let component: LocalClipsDisplayComponent;
@@ -8,7 +10,10 @@ describe('LocalClipsDisplayComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LocalClipsDisplayComponent ]
+      declarations: [ LocalClipsDisplayComponent ],
+      providers: [
+        provideMockStore({ initialState }),
+      ]
     })
     .compileComponents();
   }));

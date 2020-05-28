@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import {
   appStateSelectIsConnected,
   appStateSelectSizeSmall,
-  appStateSelectSizeXSmall
+  appStateSelectSizeXSmall,
+  appStateSelectAnySmall
 } from '../../state/app-state/app-state.selectors';
 import { map } from 'rxjs/operators';
 
@@ -30,7 +31,6 @@ export class ClipActionsBoxComponent implements OnInit {
   @Output() onRemoveAction: EventEmitter<void> = new EventEmitter<void>();
 
   isSmall$: Observable<boolean>;
-  isXSmall$: Observable<boolean>;
   offline$: Observable<boolean>;
 
   actions: Array<ClipAction>;
@@ -70,11 +70,7 @@ export class ClipActionsBoxComponent implements OnInit {
     ];
 
     this.isSmall$ = this.store$.pipe(
-      select(appStateSelectSizeSmall),
-    );
-
-    this.isXSmall$ = this.store$.pipe(
-      select(appStateSelectSizeXSmall),
+      select(appStateSelectAnySmall),
     );
 
     this.offline$ = this.store$.pipe(

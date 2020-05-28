@@ -1,6 +1,6 @@
 
 <div>
-  <ng-container *ngIf="(isSmall$ | async) || (isXSmall$ | async); then menuButton else expandedButtons"></ng-container>
+  <ng-container *ngIf="isSmall$ | async; then menuButton else expandedButtons"></ng-container>
 </div>
 
 <ng-template #expandedButtons>

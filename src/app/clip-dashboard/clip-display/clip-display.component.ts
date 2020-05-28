@@ -45,10 +45,11 @@ export class ClipDisplayComponent implements OnInit {
   }
 
   async onCopyText() {
-    await navigator.clipboard.writeText(this.clip.content);
-    this.matSnackbar.open('Copied text to clipboard', 'CLOSE', {
-      duration: 2000,
-    });
+    await navigator.clipboard.writeText(this.clip.content).then(() =>
+      this.matSnackbar.open('Copied text to clipboard', 'CLOSE', {
+        duration: 2000,
+      })
+    );
   }
 
   onRemoveClip() {
