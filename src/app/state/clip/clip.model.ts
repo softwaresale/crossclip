@@ -7,4 +7,5 @@ export interface Clip {
   clipType: string;
   created: firestore.Timestamp;
   synced?: boolean;
+  uid?: string;
 }
