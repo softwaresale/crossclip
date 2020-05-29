@@ -5,7 +5,7 @@ import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { initialState } from 'src/app/state/state';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -21,6 +21,11 @@ describe('LoginPageComponent', () => {
   let mockCredentials: auth.UserCredential;
   let mockStore: MockStore;
   let mockSelectAnySmall: MemoizedSelector<AppState, boolean>;
+  let formBuilder: FormBuilder;
+
+  /*
+    TODO: how should I test Material components?
+  */
 
   beforeEach(async(() => {
     mockCredentials = {
@@ -47,6 +52,8 @@ describe('LoginPageComponent', () => {
       ]
     })
     .compileComponents();
+
+    formBuilder = TestBed.inject(FormBuilder);
   }));
 
   beforeEach(() => {
@@ -62,5 +69,39 @@ describe('LoginPageComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('login', () => {
+    it ('should call #signInWithUsernamdAndPassword with valid form state', done => {
+      const mockFormState = { email: 'user@test.com', password: 'password' };
+      spyOnProperty(component.loginForm, 'valid', 'get').and.returnValue(true);
+      // spyOnProperty(component.loginForm, 'value').and.returnValue(mockFormState);
+      component.loginForm.setValue(mockFormState);
+
+      component.onLogin().then(() => {
+        expect(mockAuth.signInWithEmailAndPassword).toHaveBeenCalledWith(mockFormState.email, mockFormState.password);
+        // TODO test that signInWithEmailAndPassword resolves
+        done();
+      });
+    });
+
+    it ('should do nothing with invalid form state', done => {
+      spyOnProperty(component.loginForm, 'valid', 'get').and.returnValue(false);
+
+      // TODO test that this resolves and does nothing
+      component.onLogin().then(() => {
+        expect(mockAuth.signInWithEmailAndPassword).not.toHaveBeenCalled();
+        done();
+      });
+    });
+  });
+
+  describe('onGoogleLogin', () => {
+    it ('should call #signInWithPopup', done => {
+      component.onGoogleLogin().then(() => {
+        expect(mockAuth.signInWithPopup).toHaveBeenCalled();
+        done();
+      });
+    });
   });
 });

@@ -14,7 +14,7 @@ export class ClipDashboardComponent implements OnInit {
   @Input()
   emptyDescription: string;
 
-  get clipsEmpty(): boolean { return this.clips?.length === 0 }
+  get clipsEmpty(): boolean { return (this.clips?.length ?? 0) === 0 }
 
   constructor() { }
 

@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FlexibleConnectedPositionStrategy, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Router } from '@angular/router';
@@ -86,13 +85,13 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit {
     this.popupIsShowing = false;
   }
 
-  handleLogout() {
+  async handleLogout() {
     this.overlayRef.dispose();
-    this.authService.signOut().then(() => this.router.navigate(['/login']));
+    return this.authService.signOut().then(() => this.router.navigate(['/login']));
   }
 
-  handleProfile() {
+  async handleProfile() {
     this.overlayRef.dispose();
-    this.router.navigate(['/profile']);
+    return this.router.navigate(['/profile']);
   }
 }

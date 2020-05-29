@@ -22,4 +22,22 @@ describe('ClipDashboardComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  
+  describe('clipsEmpty', () => {
+    it('should return false when populated', () => {
+      component.clips = [{ clipType: 'text/plain', content: 'Hello World', created: null }];
+      expect(component.clipsEmpty).toBeFalse();
+    });
+
+    it('should return true when empty', () => {
+      component.clips = [];
+      expect(component.clipsEmpty).toBeTrue();
+    });
+
+    it('should return true when falsy', () => {
+      component.clips = null;
+      expect(component.clipsEmpty).toBeTrue();
+    });
+  });
 });

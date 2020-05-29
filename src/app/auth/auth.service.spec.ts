@@ -8,7 +8,6 @@ import { FIREBASE_OPTIONS } from '@angular/fire';
 
 describe('AuthService', () => {
   let service: AuthService;
-  // let mockAuth: jasmine.SpyObj<AngularFireAuth>;
   let mockUser = {
     uid: '1234'
   };
@@ -18,10 +17,6 @@ describe('AuthService', () => {
   };
 
   beforeEach(() => {
-    const mockUserCast = (mockUser as unknown) as User;
-    // mockAuth = jasmine.createSpyObj(['signOut'], ['authState']);
-    // spyOnProperty(mockAuth, 'authState', 'get').and.returnValue(of(mockUserCast));
-    // mockAuth.signOut.and.resolveTo();
 
     TestBed.configureTestingModule({
       providers: [
@@ -34,5 +29,45 @@ describe('AuthService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('isAuthenticated', () => {
+    it('should return true with truthy authState', done => {
+      service.isAuthenticated().subscribe(isAuthenticated => {
+        expect(isAuthenticated).toBeTrue();
+        done();
+      });
+    });
+
+    it('should return false with falsy authState', done => {
+      mockAuthStub.authState = of(null);
+      // spyOnProperty(mockAuthStub, 'authState', 'get').and.returnValue(of(null));
+      
+      service.isAuthenticated().subscribe(isAuthenticated => {
+        expect(isAuthenticated).toBeFalse();
+        done();
+      });
+
+    });
+  });
+
+  describe('user', () => {
+    it('should return truthy value', done => {
+      service.user().subscribe(authState => {
+        expect(authState).toBeTruthy();
+        done();
+      });
+    });
+  });
+
+  describe('signOut', () => {
+    it('should call angularFireAuth#signOut', done => {
+      spyOn(mockAuthStub, 'signOut').and.callThrough();
+
+      service.signOut().then(() => {
+        expect(mockAuthStub.signOut).toHaveBeenCalled();
+        done();
+      });
+    });
   });
 });

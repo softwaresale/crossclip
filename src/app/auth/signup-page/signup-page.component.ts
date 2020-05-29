@@ -61,13 +61,14 @@ export class SignupPageComponent implements OnInit, OnDestroy {
     }, { validators: verifyPasswordMatch });
   }
 
-  private handleSuccess(credentials: auth.UserCredential | string) {
-    this.router.navigate(['/local']);
-    if (typeof credentials === 'string') {
-      this.matSnackBar.open(`Welcome ${credentials}`, 'CLOSE');
-    } else {
-      this.matSnackBar.open(`Welcome ${credentials.user.displayName}`, 'CLOSE');
-    }
+  private async handleSuccess(credentials: auth.UserCredential | string) {
+    return this.router.navigate(['/local']).then(() => {
+      if (typeof credentials === 'string') {
+        this.matSnackBar.open(`Welcome ${credentials}`, 'CLOSE');
+      } else {
+        this.matSnackBar.open(`Welcome ${credentials.user.displayName}`, 'CLOSE');
+      }
+    });
   }
 
   private handleError(error: any) {
@@ -81,16 +82,16 @@ export class SignupPageComponent implements OnInit, OnDestroy {
     this.errorText$.complete();
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.signupForm.valid) {
       this.isSubmitted$.next(true);
       const { email, password, displayName } = this.signupForm.value;
-      this.angularFireAuth.createUserWithEmailAndPassword(email, password)
+      return this.angularFireAuth.createUserWithEmailAndPassword(email, password)
         .then(creds => {
-          const photoURL = SignupPageComponent.createTempAvatarFromSeed(creds.user.email);
+          const photoURL = this.createTempAvatarFromSeed(creds.user.email);
           return this.angularFireAuth.currentUser.then(user =>
             user.updateProfile({ photoURL, displayName }).then(() => this.handleSuccess(displayName))
-          )
+          );
         })
         .catch(error => this.handleError(error));
     }
@@ -102,7 +103,7 @@ export class SignupPageComponent implements OnInit, OnDestroy {
       .catch(error => this.handleError(error));
   }
 
-  private static createTempAvatarFromSeed(seed: string) {
+  private createTempAvatarFromSeed(seed: string) {
     return `https://avatars.dicebear.com/api/identicon/${seed}.svg`;
   }
 }

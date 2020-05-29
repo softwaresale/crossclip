@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { select, Store } from '@ngrx/store';
 import { State } from '../../state/state';
 import { Observable } from 'rxjs';
 import { appStateSelectAnySmall } from '../../state/app-state/app-state.selectors';
 import { User } from 'firebase';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-profile-view',
@@ -19,16 +19,16 @@ export class ProfileViewComponent implements OnInit {
 
   constructor(
     private store$: Store<State>,
-    private angularFireAuth: AngularFireAuth,
+    private authService: AuthService,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
     this.isMobile$ = this.store$.pipe(select(appStateSelectAnySmall));
-    this.user$ = this.angularFireAuth.user;
+    this.user$ = this.authService.user();
   }
 
-  onLogout() {
-    this.angularFireAuth.signOut().then(() => this.router.navigate(['/login']));
+  async onLogout() {
+    return this.authService.signOut().then(() => this.router.navigate(['/login']));
   }
 }

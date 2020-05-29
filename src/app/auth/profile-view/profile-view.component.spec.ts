@@ -9,13 +9,17 @@ import { auth } from 'firebase';
 import { MemoizedSelector } from '@ngrx/store';
 import { AppState } from 'src/app/state/app-state/app-state.reducer';
 import { appStateSelectAnySmall } from 'src/app/state/app-state/app-state.selectors';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
+import { LoginPageComponent } from '../login-page/login-page.component';
 
 describe('ProfileViewComponent', () => {
   let component: ProfileViewComponent;
   let fixture: ComponentFixture<ProfileViewComponent>;
-  let mockAuth: jasmine.SpyObj<AngularFireAuth>;
+  let spyAuth: jasmine.SpyObj<AuthService>;
   let mockCredentials: auth.UserCredential;
   let mockStore: MockStore;
+  let spyRouter: Router;
   let mockSelectAnySmall: MemoizedSelector<AppState, boolean>;
 
   beforeEach(async(() => {
@@ -24,18 +28,19 @@ describe('ProfileViewComponent', () => {
       credential: null,
     };
 
-    mockAuth = jasmine.createSpyObj(['signInWithEmailAndPassword', 'signInWithPopup']);
-    mockAuth.signInWithEmailAndPassword.and.resolveTo(mockCredentials);
-    mockAuth.signInWithPopup.and.resolveTo(mockCredentials);
+    spyAuth = jasmine.createSpyObj(['signOut', 'user']);
+    spyAuth.signOut.and.resolveTo();
 
     TestBed.configureTestingModule({
       declarations: [ ProfileViewComponent ],
       providers: [
         provideMockStore({ initialState }),
-        { provide: AngularFireAuth, useValue: mockAuth },
+        { provide: AuthService, useValue: spyAuth },
       ],
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([
+          { path: 'login', component: LoginPageComponent }
+        ]),
       ]
     })
     .compileComponents();
@@ -51,10 +56,23 @@ describe('ProfileViewComponent', () => {
       true
     );
 
+    spyRouter = TestBed.inject(Router);
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('onLogout', () => {
+    it('should call authService#signOut then navigate', done => {
+      const navSpy = spyOn(spyRouter, 'navigate');
+      component.onLogout().then(() => {
+        expect(spyAuth.signOut).toHaveBeenCalled();
+        expect(navSpy).toHaveBeenCalled();
+        done();
+      });
+    });
   });
 });
