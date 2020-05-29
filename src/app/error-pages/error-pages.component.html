@@ -5,6 +5,7 @@
         <h1>Error!</h1>
         <div class="errors-container">
           <app-error-display *ngFor="let error of errors$ | async" [error]="error"></app-error-display>
+          <mat-divider></mat-divider>
         </div>
       </div>
     </mat-card-content>

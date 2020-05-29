@@ -42,9 +42,6 @@ export const appErrorReducer = createReducer(
   on(ErrorActions.deleteErrors,
     (state, action) => adapter.removeMany(action.ids, state)
   ),
-  on(ErrorActions.loadErrors,
-    (state, action) => adapter.setAll(action.errors, state)
-  ),
   on(ErrorActions.clearErrors,
     state => adapter.removeAll(state)
   ),
