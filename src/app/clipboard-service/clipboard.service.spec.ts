@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ClipboardWatcherService } from './clipboard-watcher.service';
+import { ClipboardService } from './clipboard.service';
 
 describe('ClipboardWatcherService', () => {
-  let service: ClipboardWatcherService;
+  let service: ClipboardService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ClipboardWatcherService);
+    service = TestBed.inject(ClipboardService);
   });
 
   it('should be created', () => {
@@ -42,5 +42,16 @@ describe('ClipboardWatcherService', () => {
       });
     });
 
+  });
+
+  describe('writeText', () => {
+    it('should write text to clipboard', done => {
+      const spyClipboardWrite = spyOn(service['clipboard'], 'writeText').and.resolveTo();
+      const msg = 'Hello World';
+      service.writeText(msg).then(() => {
+        expect(spyClipboardWrite).toHaveBeenCalledWith(msg);
+        done();
+      });
+    });
   });
 });

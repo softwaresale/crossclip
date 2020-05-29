@@ -6,6 +6,7 @@ import { handleRemoveClip, syncClip } from '../../state/clip/clip.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { ClipboardService } from 'src/app/clipboard-service/clipboard.service';
 
 @Component({
   selector: 'app-clip-display',
@@ -33,6 +34,7 @@ export class ClipDisplayComponent implements OnInit {
 
   constructor(
     private store$: Store<State>,
+    private clipboardService: ClipboardService,
     private matSnackbar: MatSnackBar,
     private matDialog: MatDialog,
   ) { }
@@ -45,7 +47,15 @@ export class ClipDisplayComponent implements OnInit {
   }
 
   async onCopyText() {
+    /*
     await navigator.clipboard.writeText(this.clip.content).then(() =>
+      this.matSnackbar.open('Copied text to clipboard', 'CLOSE', {
+        duration: 2000,
+      })
+    );
+    */
+
+    return this.clipboardService.writeText(this.clip.content).then(() =>
       this.matSnackbar.open('Copied text to clipboard', 'CLOSE', {
         duration: 2000,
       })
