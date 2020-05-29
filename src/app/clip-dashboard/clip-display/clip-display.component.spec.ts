@@ -11,6 +11,7 @@ import { firestore } from 'firebase';
 import { Clip } from 'src/app/state/clip/clip.model';
 import { syncClip, handleRemoveClip } from 'src/app/state/clip/clip.actions';
 import { of } from 'rxjs';
+import { ClipboardService } from 'src/app/clipboard-service/clipboard.service';
 
 describe('ClipDisplayComponent', () => {
   let component: ClipDisplayComponent;
@@ -24,6 +25,7 @@ describe('ClipDisplayComponent', () => {
   let spyMatSnackbar: MatSnackBar;
   let spyMatDialog: MatDialog;
   let mockDialogRef: jasmine.SpyObj<MatDialogRef<any>>;
+  let spyClipboard: ClipboardService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -45,6 +47,7 @@ describe('ClipDisplayComponent', () => {
     component = fixture.componentInstance;
     component.clip = mockClip;
     mockStore = TestBed.inject(MockStore);
+    spyClipboard = TestBed.inject(ClipboardService);
     spyMatSnackbar = TestBed.inject(MatSnackBar);
     spyMatDialog = TestBed.inject(MatDialog);
     mockDialogRef = jasmine.createSpyObj(['afterClosed']);
@@ -75,7 +78,7 @@ describe('ClipDisplayComponent', () => {
   describe('onCopyText', () => {
 
     it('should set text to clipboard and show snackbar', done => {
-      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.resolveTo();
+      const writeTextSpy = spyOn(spyClipboard, 'writeText').and.resolveTo();
       const openSnackbarSpy = spyOn(spyMatSnackbar, 'open');
       component.onCopyText().then(() => {
         expect(writeTextSpy).toHaveBeenCalledWith(component.clip.content);

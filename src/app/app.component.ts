@@ -6,7 +6,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { networkStatusChanged, setBreakpointState } from './state/app-state/app-state.actions';
-import { ClipboardWatcherService } from './clipboard-watcher/clipboard-watcher.service';
+import { ClipboardService } from './clipboard-service/clipboard.service';
 import { ConnectionService } from 'ng-connection-service';
 import { appStateSelectBreakpointState, appStateSelectIsConnected } from './state/app-state/app-state.selectors';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -50,7 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<State>,
     private breakpointObserver: BreakpointObserver,
-    private clipboardWatcherService: ClipboardWatcherService,
+    private clipboardWatcherService: ClipboardService,
     private connectionService: ConnectionService,
     private authService: AuthService,
     private swUpdate: SwUpdate,
