@@ -7,7 +7,7 @@
     <mat-icon *ngIf="offline$ | async">offline_bolt</mat-icon>
     <app-profile-button></app-profile-button>
   </mat-toolbar>
-  <div style="height: 90%">
+  <div [style.height]="pageHeight">
     <mat-sidenav-container class="container">
       <mat-sidenav
         #sidenav
@@ -25,7 +25,7 @@
           </a>
         </mat-nav-list>
       </mat-sidenav>
-      <mat-sidenav-content style="height: 90%">
+      <mat-sidenav-content style="height: 100%">
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>
