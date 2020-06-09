@@ -1,27 +1,22 @@
-import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { State } from './state/state';
 import { clipboardChanged } from './state/clip/clip.actions';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
-import {
-  networkStatusChanged,
-  setBreakpointState,
-  setDarkTheme,
-  setLightTheme
-} from './state/app-state/app-state.actions';
+import { networkStatusChanged, setBreakpointState } from './state/app-state/app-state.actions';
 import { ClipboardWatcherService } from './clipboard-watcher/clipboard-watcher.service';
 import { ConnectionService } from 'ng-connection-service';
 import {
+  appStateSelectAnySmall,
   appStateSelectBreakpointState,
-  appStateSelectIsConnected,
-  appStateSelectTheme
+  appStateSelectIsConnected
 } from './state/app-state/app-state.selectors';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SwUpdate } from '@angular/service-worker';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { OverlayContainer } from '@angular/cdk/overlay';
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -30,12 +25,9 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  @HostBinding('class')
-  styleClass: string;
-
   private unsubscribe$: Subject<void>;
   offline$: Observable<boolean>;
-  isSmall$: Observable<boolean>;
+  isSmall$: BehaviorSubject<boolean>;
   userLoggedOut$: Observable<boolean>;
 
   navEndpoints = [
@@ -67,7 +59,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private angularFireAuth: AngularFireAuth,
     private swUpdate: SwUpdate,
     private matSnackBar: MatSnackBar,
-    private overlayContainer: OverlayContainer,
+    private domSanitizer: DomSanitizer,
   ) {
   }
 
@@ -79,6 +71,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // Create the unsubscribe subject
     this.unsubscribe$ = new Subject<void>();
     this.offline$ = new BehaviorSubject<boolean>(false);
+    this.isSmall$ = new BehaviorSubject<boolean>(false);
 
     // Watch for application updates from the sw
     this.swUpdate.available
@@ -92,7 +85,6 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
 
-    // Watch for updates
     this.swUpdate.activated
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
@@ -100,27 +92,6 @@ export class AppComponent implements OnInit, OnDestroy {
           duration: 3000
         })
       });
-
-    // Watch for system theme changes
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      this.store$.dispatch(setDarkTheme());
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      this.store$.dispatch(setLightTheme());
-    }
-
-    this.store$
-      .pipe(select(appStateSelectTheme), takeUntil(this.unsubscribe$))
-      .subscribe(isDarkTheme => {
-        if (isDarkTheme) {
-          this.overlayContainer.getContainerElement().classList.remove('light-theme');
-          this.overlayContainer.getContainerElement().classList.add('dark-theme');
-          this.styleClass = 'dark-theme';
-        } else {
-          this.overlayContainer.getContainerElement().classList.remove('dark-theme');
-          this.overlayContainer.getContainerElement().classList.add('light-theme');
-          this.styleClass = 'light-theme';
-        }
-      })
 
     // TODO consider moving this somewhere else
     // Watch for clipboard changes
@@ -144,13 +115,17 @@ export class AppComponent implements OnInit, OnDestroy {
     // Watch the state...
     this.offline$ = this.store$.pipe(select(appStateSelectIsConnected), map(value => !value));
 
-    this.isSmall$ = this.store$.pipe(
-      select(appStateSelectBreakpointState),
-      map(state => state.breakpoints[Breakpoints.Small] || state.breakpoints[Breakpoints.XSmall]),
-    );
+    this.store$.pipe(
+      select(appStateSelectAnySmall),
+      takeUntil(this.unsubscribe$)
+    ).subscribe(this.isSmall$);
 
     // Watch if the user is logged in or not
     this.userLoggedOut$ = this.angularFireAuth.user.pipe(map(user => !user));
+  }
+
+  get pageHeight(): number {
+    return this.isSmall$.getValue() ? 56 : 64;
   }
 
   ngOnDestroy(): void {
