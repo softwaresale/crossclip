@@ -31,7 +31,7 @@ import { ThemeSetterModule } from './theme-setter/theme-setter.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

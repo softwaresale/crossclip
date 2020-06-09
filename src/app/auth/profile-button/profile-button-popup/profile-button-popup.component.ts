@@ -1,30 +1,24 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { State } from '../../../state/state';
-import { Observable } from 'rxjs';
-import { appStateSelectTheme } from '../../../state/app-state/app-state.selectors';
+import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  PROFILE_BUTTON_CALLBACKS,
+  PROFILE_BUTTON_DISPLAY_NAME,
+} from "../profile-button.component";
 
 @Component({
   selector: 'app-profile-button-popup',
   templateUrl: './profile-button-popup.component.html',
   styleUrls: ['./profile-button-popup.component.sass']
 })
-export class ProfileButtonPopupComponent implements OnInit {
-
-  @Input()
-  displayName: string;
-  @Output()
-  onLogout = new EventEmitter();
-  @Output()
-  onProfile = new EventEmitter();
-
-  isDarkTheme$: Observable<boolean>;
+export class ProfileButtonPopupComponent implements OnInit, OnDestroy {
 
   constructor(
-    private store$: Store<State>,
+    @Inject(PROFILE_BUTTON_DISPLAY_NAME) public displayName: string,
+    @Inject(PROFILE_BUTTON_CALLBACKS) public callbacks: { onProfile: () => void, onLogout: () => void }
   ) { }
 
   ngOnInit(): void {
-    this.isDarkTheme$ = this.store$.pipe(select(appStateSelectTheme));
+  }
+
+  ngOnDestroy() {
   }
 }

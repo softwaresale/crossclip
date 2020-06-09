@@ -2,8 +2,24 @@
 .display-content
   display: flex
   flex-direction: column
-  background-color: white
   padding: 8px 32px 8px 16px
+  border-width: 1px
+  border-color: white
+  border-style: solid
+
+.display-content-dark
+  @extend .display-content
+  background-color: #424242
+
+.display-content-light
+  @extend .display-content
+  background-color: #ffffff
+
+.white-text
+  color: white
+
+.black-text
+  color: black
 
 .action-btn
   margin-bottom: 8px

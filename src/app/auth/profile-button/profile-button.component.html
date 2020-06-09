@@ -6,11 +6,3 @@
     alt="Profile Info"
     src="{{ userProfileUrl$ | async }}">
 </button>
-
-<ng-template #popupContent>
-  <app-profile-button-popup
-    [displayName]="displayName$ | async"
-    (onLogout)="handleLogout()"
-    (onProfile)="handleProfile()"
-  ></app-profile-button-popup>
-</ng-template>

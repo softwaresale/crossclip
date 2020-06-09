@@ -1,6 +1,16 @@
 
-<div class="display-content mat-elevation-z5" [ngClass]="{ 'dark-theme': isDarkTheme$ | async, 'light-theme': !(isDarkTheme$ | async) }">
-  <h3>{{ displayName }}</h3>
-  <button mat-stroked-button class="action-btn" (click)="onProfile.emit()">PROFILE</button>
-  <button mat-raised-button color="warn" class="action-btn" (click)="onLogout.emit()">LOG OUT</button>
+<div class="mat-elevation-z5" appThemed lightClass="display-content-light" darkClass="display-content-dark" >
+  <h3 appThemed lightClass="black-text" darkClass="white-text">{{ displayName }}</h3>
+  <button
+    appThemed
+    lightClass="black-text"
+    darkClass="white-text"
+    mat-stroked-button
+    class="action-btn"
+    (click)="callbacks.onProfile()">PROFILE</button>
+  <button
+    mat-raised-button
+    color="warn"
+    class="action-btn"
+    (click)="callbacks.onLogout()">LOG OUT</button>
 </div>

@@ -1,20 +1,33 @@
-import { AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component, ComponentRef,
+  ElementRef,
+  InjectionToken, Injector, OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { FlexibleConnectedPositionStrategy, Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
+import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { State } from '../../state/state';
 import { appStateSelectTheme } from '../../state/app-state/app-state.selectors';
+import { ProfileButtonPopupComponent } from "./profile-button-popup/profile-button-popup.component";
+
+export const PROFILE_BUTTON_DISPLAY_NAME = new InjectionToken<string>('PROFILE_BUTTON_DISPLAY_NAME');
+export const PROFILE_BUTTON_CALLBACKS = new InjectionToken<{ onProfile: () => void, onLogout: () => void }>('PROFILE_BUTTON_CALLBACKS');
 
 @Component({
   selector: 'app-profile-button',
   templateUrl: './profile-button.component.html',
   styleUrls: ['./profile-button.component.sass']
 })
-export class ProfileButtonComponent implements OnInit, AfterViewInit {
+export class ProfileButtonComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('parentButton')
   parentButtonRef: ElementRef;
@@ -27,9 +40,8 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit {
   private popupIsShowing: boolean;
 
   isLoggedIn$: Observable<boolean>;
-  displayName$: Observable<string>;
+  displayName$: BehaviorSubject<string>;
   userProfileUrl$: Observable<string>;
-  private theme: string;
   private unsubscribe$: Subject<void>;
 
   constructor(
@@ -38,20 +50,21 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit {
     private router: Router,
     private viewContainerRef: ViewContainerRef,
     private store$: Store<State>,
+    private injector: Injector,
   ) { }
 
   ngOnInit(): void {
     this.unsubscribe$ = new Subject<void>();
+    this.displayName$ = new BehaviorSubject<string>(null);
     this.isLoggedIn$ = this.angularFireAuth.authState.pipe(map(user => !!user));
-    this.displayName$ = this.angularFireAuth.user.pipe(map(user => user.displayName));
+
+    this.angularFireAuth.user
+      .pipe(map(user => user.displayName), takeUntil(this.unsubscribe$))
+      .subscribe(this.displayName$);
+
     this.userProfileUrl$ = this.angularFireAuth.user.pipe(
       map(user => user.photoURL),
     );
-    this.store$.pipe(
-      select(appStateSelectTheme),
-      map(isDarkTheme => isDarkTheme ? 'dark-theme' : 'light-theme'),
-      takeUntil(this.unsubscribe$)
-    ).subscribe(theme => this.theme = theme);
   }
 
   ngAfterViewInit(): void {
@@ -72,6 +85,12 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit {
     ]);
   }
 
+  ngOnDestroy() {
+    this.displayName$.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   togglePopup() {
     if (this.popupIsShowing) {
       this.hidePopup();
@@ -84,12 +103,23 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit {
     this.overlayRef = this.matOverlay.create({
       positionStrategy: this.popupPositionStrategy,
       disposeOnNavigation: true,
-      panelClass: this.theme,
     });
-    // const popupPortal = new ComponentPortal(ProfileButtonPopupComponent);
-    const popupPortal = new TemplatePortal(this.popupContentTemplateRef, this.viewContainerRef);
+
+    const popupPortal = new ComponentPortal(
+      ProfileButtonPopupComponent,
+      null,
+      this.createOverlayInjector(this.displayName$.getValue())
+    );
     this.overlayRef.attach(popupPortal);
     this.popupIsShowing = true;
+  }
+
+  private createOverlayInjector(displayName: string): PortalInjector {
+    const tokens = new WeakMap<InjectionToken<any>, any>([
+      [ PROFILE_BUTTON_DISPLAY_NAME, displayName ],
+      [ PROFILE_BUTTON_CALLBACKS, { onLogout: this.handleLogout.bind(this), onProfile: this.handleProfile.bind(this) } ],
+    ]);
+    return new PortalInjector(this.injector, tokens);
   }
 
   hidePopup() {
@@ -98,12 +128,14 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit {
   }
 
   handleLogout() {
-    this.overlayRef.dispose();
-    this.angularFireAuth.signOut().then(() => this.router.navigate(['/login']));
+    // this.overlayRef.dispose();
+    this.angularFireAuth.signOut()
+      .then(() => this.router.navigate(['/login']))
+      .then(() => this.hidePopup());
   }
 
   handleProfile() {
-    this.overlayRef.dispose();
-    this.router.navigate(['/profile']);
+    // this.overlayRef.dispose();
+    this.router.navigate(['/profile']).then(() => this.hidePopup());
   }
 }

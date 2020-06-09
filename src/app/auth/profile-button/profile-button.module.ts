@@ -8,6 +8,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { ProfileButtonPopupComponent } from './profile-button-popup/profile-button-popup.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { RouterModule } from '@angular/router';
+import { ThemedDirectiveModule } from "../../themed-directive/themed-directive.module";
 
 @NgModule({
   declarations: [ProfileButtonComponent, ProfileButtonPopupComponent],
@@ -19,6 +20,7 @@ import { RouterModule } from '@angular/router';
     AngularFireAuthModule,
     MatButtonModule,
     MatRippleModule,
+    ThemedDirectiveModule,
   ],
   exports: [ProfileButtonComponent],
 })
