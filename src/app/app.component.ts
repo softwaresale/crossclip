@@ -124,8 +124,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userLoggedOut$ = this.angularFireAuth.user.pipe(map(user => !user));
   }
 
-  get pageHeight(): string {
-    return this.domSanitizer.bypassSecurityTrustStyle(`calc(100% - ${this.isSmall$.getValue() ? '56' : '64'}px)`).toString();
+  get pageHeight(): number {
+    return this.isSmall$.getValue() ? 56 : 64;
   }
 
   ngOnDestroy(): void {

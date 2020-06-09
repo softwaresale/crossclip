@@ -7,7 +7,7 @@
     <mat-icon *ngIf="offline$ | async">offline_bolt</mat-icon>
     <app-profile-button></app-profile-button>
   </mat-toolbar>
-  <div [style.height]="pageHeight">
+  <div [ngStyle]="{ 'height': 'calc(100% - '+ pageHeight +'px)' }">
     <mat-sidenav-container class="container">
       <mat-sidenav
         #sidenav
