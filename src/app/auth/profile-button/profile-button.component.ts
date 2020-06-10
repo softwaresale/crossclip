@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { FlexibleConnectedPositionStrategy, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
 import { Router } from '@angular/router';
@@ -18,6 +18,7 @@ import { select, Store } from '@ngrx/store';
 import { State } from '../../state/state';
 import { appStateSelectTheme } from '../../state/app-state/app-state.selectors';
 import { ProfileButtonPopupComponent } from "./profile-button-popup/profile-button-popup.component";
+import { User } from "firebase";
 
 export const PROFILE_BUTTON_DISPLAY_NAME = new InjectionToken<string>('PROFILE_BUTTON_DISPLAY_NAME');
 export const PROFILE_BUTTON_CALLBACKS = new InjectionToken<{ onProfile: () => void, onLogout: () => void }>('PROFILE_BUTTON_CALLBACKS');
@@ -40,8 +41,7 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit, OnDestroy 
   private popupIsShowing: boolean;
 
   isLoggedIn$: Observable<boolean>;
-  displayName$: BehaviorSubject<string>;
-  userProfileUrl$: Observable<string>;
+  user$: BehaviorSubject<User>;
   private unsubscribe$: Subject<void>;
 
   constructor(
@@ -55,16 +55,17 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnInit(): void {
     this.unsubscribe$ = new Subject<void>();
-    this.displayName$ = new BehaviorSubject<string>(null);
-    this.isLoggedIn$ = this.angularFireAuth.authState.pipe(map(user => !!user));
+    this.user$ = new BehaviorSubject<User>(null);
+    this.isLoggedIn$ = this.angularFireAuth.authState.pipe(
+      switchMap(user => user.reload().then(() => this.angularFireAuth.currentUser)),
+      map(user => !!user)
+    );
 
     this.angularFireAuth.user
-      .pipe(map(user => user.displayName), takeUntil(this.unsubscribe$))
-      .subscribe(this.displayName$);
-
-    this.userProfileUrl$ = this.angularFireAuth.user.pipe(
-      map(user => user.photoURL),
-    );
+      .pipe(
+        switchMap(user => user.reload().then(() => this.angularFireAuth.currentUser)),
+        takeUntil(this.unsubscribe$)
+      ).subscribe(this.user$);
   }
 
   ngAfterViewInit(): void {
@@ -86,7 +87,7 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnDestroy() {
-    this.displayName$.complete();
+    this.user$.complete();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -108,7 +109,7 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit, OnDestroy 
     const popupPortal = new ComponentPortal(
       ProfileButtonPopupComponent,
       null,
-      this.createOverlayInjector(this.displayName$.getValue())
+      this.createOverlayInjector(this.user$.getValue().displayName)
     );
     this.overlayRef.attach(popupPortal);
     this.popupIsShowing = true;

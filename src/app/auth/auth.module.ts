@@ -13,9 +13,16 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SignupPageComponent } from './signup-page/signup-page.component';
 import { RouterModule } from '@angular/router';
 import { ProfileViewComponent } from './profile-view/profile-view.component';
+import { ProfileEditDialogComponent } from './profile-view/profile-edit-dialog/profile-edit-dialog.component';
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { RevalidateCredentialsDialogComponent } from './profile-view/revalidate-credentials-dialog/revalidate-credentials-dialog.component';
 
 @NgModule({
-  declarations: [LoginPageComponent, SignupPageComponent, ProfileViewComponent],
+  declarations: [LoginPageComponent, SignupPageComponent, ProfileViewComponent, ProfileEditDialogComponent, RevalidateCredentialsDialogComponent],
   imports: [
     CommonModule,
     AngularFireAuthModule,
@@ -28,6 +35,11 @@ import { ProfileViewComponent } from './profile-view/profile-view.component';
     MatIconModule,
     MatSnackBarModule,
     MatProgressBarModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatTabsModule,
+    MatProgressSpinnerModule,
+    MatCheckboxModule,
   ]
 })
 export class AuthModule { }

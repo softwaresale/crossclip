@@ -9,8 +9,17 @@
     <p class="mat-caption">Profile Actions</p>
     <div [ngClass]="{'actions-box-row': !(isMobile$ | async), 'actions-box-column': isMobile$ | async }">
       <a mat-stroked-button [routerLink]="['/remote']" class="actions-box-btn">CLIPS</a>
-      <button mat-stroked-button class="actions-box-btn">EDIT PROFILE</button>
-      <button mat-stroked-button color="warn" class="actions-box-btn">DELETE PROFILE</button>
+      <button *ngIf="providerIsPassword$ | async" mat-stroked-button class="actions-box-btn" (click)="editProfile()">EDIT PROFILE</button>
+      <button mat-stroked-button color="warn" class="actions-box-btn" (click)="deleteProfile()">DELETE PROFILE</button>
     </div>
   </div>
 </div>
+
+<ng-template #confirmDeleteDialog>
+  <h1 mat-dialog-title>Are You Sure?</h1>
+  <p mat-dialog-content>If you delete your account, it cannot be recovered. Thanks for using Crossclip :)</p>
+  <div mat-dialog-actions>
+    <button mat-stroked-button [mat-dialog-close]="false">CANCEL</button>
+    <button mat-raised-button [mat-dialog-close]="true" color="warn">DELETE PROFILE</button>
+  </div>
+</ng-template>

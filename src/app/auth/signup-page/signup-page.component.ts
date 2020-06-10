@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 
-const verifyPasswordMatch: ValidatorFn = (group: FormGroup): ValidationErrors | null => {
+export const verifyPasswordMatch: ValidatorFn = (group: FormGroup): ValidationErrors | null => {
   const password = group.get('password');
   const confirm = group.get('confirmPassword');
 
@@ -62,12 +62,13 @@ export class SignupPageComponent implements OnInit, OnDestroy {
   }
 
   private handleSuccess(credentials: auth.UserCredential | string) {
-    this.router.navigate(['/local']);
-    if (typeof credentials === 'string') {
-      this.matSnackBar.open(`Welcome ${credentials}`, 'CLOSE');
-    } else {
-      this.matSnackBar.open(`Welcome ${credentials.user.displayName}`, 'CLOSE');
-    }
+    return this.router.navigate(['/local']).then(() => {
+      if (typeof credentials === 'string') {
+        this.matSnackBar.open(`Welcome ${credentials}`, 'CLOSE');
+      } else {
+        this.matSnackBar.open(`Welcome ${credentials.user.displayName}`, 'CLOSE');
+      }
+    });
   }
 
   private handleError(error: any) {
@@ -88,8 +89,8 @@ export class SignupPageComponent implements OnInit, OnDestroy {
       this.angularFireAuth.createUserWithEmailAndPassword(email, password)
         .then(creds => {
           const photoURL = SignupPageComponent.createTempAvatarFromSeed(creds.user.email);
-          return this.angularFireAuth.currentUser.then(user =>
-            user.updateProfile({ photoURL, displayName }).then(() => this.handleSuccess(displayName))
+          return creds.user.updateProfile({ photoURL, displayName }).then(() =>
+            this.angularFireAuth.currentUser.then(user => this.handleSuccess(user.displayName))
           )
         })
         .catch(error => this.handleError(error));
