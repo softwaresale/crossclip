@@ -9,7 +9,7 @@
     <p class="mat-caption">Profile Actions</p>
     <div [ngClass]="{'actions-box-row': !(isMobile$ | async), 'actions-box-column': isMobile$ | async }">
       <a mat-stroked-button [routerLink]="['/remote']" class="actions-box-btn">CLIPS</a>
-      <button mat-stroked-button class="actions-box-btn">EDIT PROFILE</button>
+      <button mat-stroked-button class="actions-box-btn" (click)="editProfile()">EDIT PROFILE</button>
       <button mat-stroked-button color="warn" class="actions-box-btn">DELETE PROFILE</button>
     </div>
   </div>

@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { appStateSelectAnySmall } from '../../state/app-state/app-state.selectors';
 import { User } from 'firebase';
 import { Router } from '@angular/router';
+import { MatDialog } from "@angular/material/dialog";
+import { ProfileEditDialogComponent } from "./profile-edit-dialog/profile-edit-dialog.component";
 
 @Component({
   selector: 'app-profile-view',
@@ -21,6 +23,7 @@ export class ProfileViewComponent implements OnInit {
     private store$: Store<State>,
     private angularFireAuth: AngularFireAuth,
     private router: Router,
+    private matDialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -30,5 +33,9 @@ export class ProfileViewComponent implements OnInit {
 
   onLogout() {
     this.angularFireAuth.signOut().then(() => this.router.navigate(['/login']));
+  }
+
+  editProfile() {
+    this.matDialog.open(ProfileEditDialogComponent, { width: '500px' });
   }
 }

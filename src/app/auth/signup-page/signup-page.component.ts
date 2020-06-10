@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 
-const verifyPasswordMatch: ValidatorFn = (group: FormGroup): ValidationErrors | null => {
+export const verifyPasswordMatch: ValidatorFn = (group: FormGroup): ValidationErrors | null => {
   const password = group.get('password');
   const confirm = group.get('confirmPassword');
 

@@ -1,0 +1,60 @@
+
+<h1 mat-dialog-title>Edit Profile</h1>
+<mat-divider></mat-divider>
+<div mat-dialog-content>
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab [label]="editProfileLabel">
+      <div class="form-container">
+        <form [formGroup]="profileForm">
+          <mat-form-field class="spaced-form-field" appearance="outline">
+            <mat-label>Display Name</mat-label>
+            <input matInput formControlName="displayName">
+            <mat-error *ngIf="profileForm.get('displayName').hasError('required')">Field is required</mat-error>
+          </mat-form-field>
+          <mat-form-field class="spaced-form-field" appearance="outline">
+            <mat-label>Profile Picture</mat-label>
+            <input matInput formControlName="photoURL">
+            <mat-error *ngIf="profileForm.get('photoURL').hasError('required')">Field is required</mat-error>
+          </mat-form-field>
+        </form>
+      </div>
+    </mat-tab>
+    <mat-tab [label]="editCredsLabel">
+      <div class="form-container">
+        <form [formGroup]="credentialsForm">
+          <mat-form-field class="spaced-form-field" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email">
+            <mat-error *ngIf="credentialsForm.get('email').hasError('required')">Field is required</mat-error>
+            <mat-error *ngIf="credentialsForm.get('email').hasError('email')">Must be a valid email</mat-error>
+          </mat-form-field>
+          <mat-form-field class="spaced-form-field" appearance="outline">
+            <mat-label>Old Password</mat-label>
+            <input matInput type="password" formControlName="oldPassword">
+            <mat-error *ngIf="credentialsForm.get('oldPassword').hasError('required')">Field is required</mat-error>
+          </mat-form-field>
+          <mat-form-field class="spaced-form-field" appearance="outline">
+            <mat-label>New Password</mat-label>
+            <input matInput type="password" formControlName="password">
+            <mat-error *ngIf="credentialsForm.get('password').hasError('required')">Field is required</mat-error>
+          </mat-form-field>
+          <mat-form-field class="spaced-form-field" appearance="outline">
+            <mat-label>Confirm New Password</mat-label>
+            <input matInput type="password" formControlName="confirmPassword">
+            <mat-error *ngIf="credentialsForm.get('confirmPassword').hasError('required')">Field is required</mat-error>
+          </mat-form-field>
+        </form>
+        <div class="cross-form-errors-box">
+          <p class="app-warn-color" *ngIf="credentialsForm.hasError('noMatch')">Passwords do not match</p>
+          <p class="app-warn-color" *ngIf="credentialsForm.hasError('oldAndNewMatch')">New password cannot be the same as the old one</p>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<mat-divider></mat-divider>
+<div mat-dialog-actions align="end">
+  <mat-progress-spinner id="loading-indicator" diameter="35" *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-spinner>
+  <button mat-stroked-button mat-dialog-close>CANCEL</button>
+  <button mat-raised-button color="accent" [disabled]="submitDisabled" (click)="submitForm()">SUBMIT</button>
+</div>
