@@ -6,9 +6,9 @@
     <span><img src="assets/crossclip-logo-text-wte.png" alt="Crossclip" id="title-logo" /></span>
     <span style="flex: 1 1 auto"><!-- Fill middle --></span>
     <mat-icon *ngIf="offline$ | async">offline_bolt</mat-icon>
-    <app-profile-button></app-profile-button>
+    <app-profile-button *ngIf="!(userLoggedOut$ | async)"></app-profile-button>
   </mat-toolbar>
-  <div [ngStyle]="{ 'height': 'calc(100% - '+ this.isSmall$.getValue() ? '56' : '64' +'px)' }">
+  <div [ngStyle]="{ 'height': 'calc(100% - '+ pageHeight +'px)' }">
     <mat-sidenav-container class="container">
       <mat-sidenav
         #sidenav
@@ -16,6 +16,9 @@
         [opened]="!(isSmall$ | async) && !(userLoggedOut$ | async)"
         fixedInViewport="true"
         [fixedTopGap]="(isSmall$ | async) ? 56 : 64">
+        <mat-toolbar>
+          <app-theme-setter></app-theme-setter>
+        </mat-toolbar>
         <mat-nav-list>
           <a mat-list-item
              *ngFor="let navItem of navEndpoints"

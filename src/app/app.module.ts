@@ -27,10 +27,11 @@ import { AuthModule } from './auth/auth.module';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 import { ProfileButtonModule } from './auth/profile-button/profile-button.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ThemeSetterModule } from './theme-setter/theme-setter.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +71,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     RemoteClipsDisplayModule,
     AuthModule,
     ProfileButtonModule,
+    ThemeSetterModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

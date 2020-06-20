@@ -37,13 +37,15 @@
 .actions-box-row
   @extend .actions-box-base
   flex-direction: row
+  justify-content: center
 
-.actions-box-row > a, button
+.actions-box-row .actions-box-btn
   margin-right: 8px
 
 .actions-box-column
   @extend .actions-box-base
   flex-direction: column
 
-.actions-box-column > a, button
+.actions-box-column .actions-box-btn
   margin-top: 8px
+  width: 40%

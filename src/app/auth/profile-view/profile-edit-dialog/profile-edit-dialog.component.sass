@@ -1,0 +1,30 @@
+
+.form-container
+  display: flex
+  flex-direction: column
+  padding: 16px
+
+.form-container form
+  display: flex
+  flex-direction: column
+  align-self: center
+
+.form-container-desktop
+  @extend .form-container
+  width: 65%
+
+.form-container-mobile
+  @extend .form-container
+  width: 100%
+
+#loading-indicator
+  margin-right: 32px
+
+#login-button
+  width: 65%
+  align-self: center
+
+#login-error-message
+  width: 64%
+  align-self: center
+  margin-top: 8px

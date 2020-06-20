@@ -40,3 +40,8 @@ export const appStateSelectIsConnected = createSelector(
   selectAppStateFeature,
   state => state.networkConnected
 );
+
+export const appStateSelectTheme = createSelector(
+  selectAppStateFeature,
+  state => state.darkTheme,
+);
