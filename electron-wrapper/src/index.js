@@ -18,7 +18,7 @@ const createWindow = () => {
       enableRemoteModule: false,
       preload: path.join(__dirname, 'preload.js')
     },
-    icon: path.join(__dirname, 'icon-192x192.png'),
+    icon: path.join(__dirname, 'icon-384x384.png'),
   });
 
   // Load the firebase-hosted web app.
