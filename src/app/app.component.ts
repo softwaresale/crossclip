@@ -8,15 +8,11 @@ import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { networkStatusChanged, setBreakpointState } from './state/app-state/app-state.actions';
 import { ClipboardWatcherService } from './clipboard-watcher/clipboard-watcher.service';
 import { ConnectionService } from 'ng-connection-service';
-import {
-  appStateSelectAnySmall,
-  appStateSelectBreakpointState,
-  appStateSelectIsConnected
-} from './state/app-state/app-state.selectors';
+import { appStateSelectAnySmall, appStateSelectIsConnected } from './state/app-state/app-state.selectors';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SwUpdate } from '@angular/service-worker';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DomSanitizer } from "@angular/platform-browser";
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -122,10 +118,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Watch if the user is logged in or not
     this.userLoggedOut$ = this.angularFireAuth.user.pipe(map(user => !user));
-  }
-
-  get pageHeight(): string {
-    return this.domSanitizer.bypassSecurityTrustStyle(`calc(100% - ${this.isSmall$.getValue() ? '56' : '64'}px)`).toString();
   }
 
   ngOnDestroy(): void {

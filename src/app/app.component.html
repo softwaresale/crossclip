@@ -2,12 +2,13 @@
 <div class="container">
   <mat-toolbar color="primary">
     <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
-    <span>Crossclip</span>
+    <!-- <span>Crossclip</span> -->
+    <span><img src="assets/crossclip-logo-text-wte.png" alt="Crossclip" id="title-logo" /></span>
     <span style="flex: 1 1 auto"><!-- Fill middle --></span>
     <mat-icon *ngIf="offline$ | async">offline_bolt</mat-icon>
     <app-profile-button></app-profile-button>
   </mat-toolbar>
-  <div [style.height]="pageHeight">
+  <div [ngStyle]="{ 'height': 'calc(100% - '+ this.isSmall$.getValue() ? '56' : '64' +'px)' }">
     <mat-sidenav-container class="container">
       <mat-sidenav
         #sidenav
