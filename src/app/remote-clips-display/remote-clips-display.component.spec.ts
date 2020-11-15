@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { RemoteClipsDisplayComponent } from './remote-clips-display.component';
 
@@ -6,7 +6,7 @@ describe('RemoteClipsDisplayComponent', () => {
   let component: RemoteClipsDisplayComponent;
   let fixture: ComponentFixture<RemoteClipsDisplayComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RemoteClipsDisplayComponent ]
     })

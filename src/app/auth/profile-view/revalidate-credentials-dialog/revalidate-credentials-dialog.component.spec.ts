@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { RevalidateCredentialsDialogComponent } from './revalidate-credentials-dialog.component';
 
@@ -6,7 +6,7 @@ describe('RevalidateCredentialsDialogComponent', () => {
   let component: RevalidateCredentialsDialogComponent;
   let fixture: ComponentFixture<RevalidateCredentialsDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RevalidateCredentialsDialogComponent ]
     })

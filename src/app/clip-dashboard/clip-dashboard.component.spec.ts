@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ClipDashboardComponent } from './clip-dashboard.component';
 
@@ -6,7 +6,7 @@ describe('ClipDashboardComponent', () => {
   let component: ClipDashboardComponent;
   let fixture: ComponentFixture<ClipDashboardComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ClipDashboardComponent ]
     })
