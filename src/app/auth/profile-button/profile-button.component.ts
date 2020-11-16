@@ -130,15 +130,13 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit, OnDestroy 
     this.popupIsShowing = false;
   }
 
-  handleLogout() {
-    // this.overlayRef.dispose();
-    this.angularFireAuth.signOut()
+  async handleLogout() {
+    return this.angularFireAuth.signOut()
       .then(() => this.router.navigate(['/login']))
       .then(() => this.hidePopup());
   }
 
-  handleProfile() {
-    // this.overlayRef.dispose();
-    this.router.navigate(['/profile']).then(() => this.hidePopup());
+  async handleProfile() {
+    return this.router.navigate(['/profile']).then(() => this.hidePopup());
   }
 }

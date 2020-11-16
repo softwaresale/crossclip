@@ -6,6 +6,7 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
+      require('karma-coverage'),
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
@@ -23,7 +24,17 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'coverage', 'kjhtml'],
+    preprocessors: {
+      // source files, that you wanna generate coverage for
+      // do not include tests or libraries
+      // (these files will be instrumented by Istanbul)
+      'src/**/*.ts': ['coverage']
+    },
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
