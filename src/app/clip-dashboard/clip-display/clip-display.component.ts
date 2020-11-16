@@ -54,7 +54,6 @@ export class ClipDisplayComponent implements OnInit {
   onRemoveClip() {
     // If the clip is synced, then confirm to delete it from the server
     if (this.clip.synced) {
-
       this.matDialog.open(this.confirmDialog)
         .afterClosed().subscribe(confirm =>
           this.store$.dispatch(handleRemoveClip({ clip: this.clip, deleteRemote: confirm }))

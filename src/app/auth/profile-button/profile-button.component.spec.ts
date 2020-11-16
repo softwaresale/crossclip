@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ProfileButtonComponent } from './profile-button.component';
+import {FIREBASE_OPTIONS} from '@angular/fire';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {RouterTestingModule} from '@angular/router/testing';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialState} from '../../state/state';
 
 describe('ProfileButtonComponent', () => {
   let component: ProfileButtonComponent;
@@ -8,7 +13,15 @@ describe('ProfileButtonComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProfileButtonComponent ]
+      declarations: [ ProfileButtonComponent ],
+      imports: [
+        OverlayModule,
+        RouterTestingModule.withRoutes([]),
+      ],
+      providers: [
+        provideMockStore({ initialState }),
+        { provide: FIREBASE_OPTIONS, useValue: {} },
+      ]
     })
     .compileComponents();
   }));

@@ -13,7 +13,7 @@ import { switchMap } from 'rxjs/operators';
 export class RemoteClipsDisplayComponent implements OnInit {
 
   clips$: Observable<Clip[]>;
-  emptyMsg = "Sync some clippings from 'Local' and they'll show up here";
+  emptyMsg = 'Sync some clippings from \'Local\' and they\'ll show up here';
 
   constructor(
     private firestore: AngularFirestore,

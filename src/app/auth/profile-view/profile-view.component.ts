@@ -6,11 +6,11 @@ import { Observable } from 'rxjs';
 import { appStateSelectAnySmall } from '../../state/app-state/app-state.selectors';
 import { User } from 'firebase';
 import { Router } from '@angular/router';
-import { MatDialog } from "@angular/material/dialog";
-import { ProfileEditDialogComponent } from "./profile-edit-dialog/profile-edit-dialog.component";
-import { map, switchMap } from "rxjs/operators";
-import { RevalidateCredentialsDialogComponent } from "./revalidate-credentials-dialog/revalidate-credentials-dialog.component";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatDialog } from '@angular/material/dialog';
+import { ProfileEditDialogComponent } from './profile-edit-dialog/profile-edit-dialog.component';
+import { map } from 'rxjs/operators';
+import { RevalidateCredentialsDialogComponent } from './revalidate-credentials-dialog/revalidate-credentials-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile-view',
@@ -52,7 +52,7 @@ export class ProfileViewComponent implements OnInit {
       .then(loggedIn => {
         if (loggedIn) {
           return this.matDialog.open(ProfileEditDialogComponent, {width: '500px'}).afterClosed().toPromise()
-            .then(() => this.matSnackBar.open('Successfully updated profile', 'CLOSE').afterDismissed().toPromise())
+            .then(() => this.matSnackBar.open('Successfully updated profile', 'CLOSE').afterDismissed().toPromise());
         } else {
           return this.matSnackBar.open('Credential revalidation failed. Cannot modify profile', 'CLOSE').afterDismissed().toPromise();
         }
@@ -68,7 +68,7 @@ export class ProfileViewComponent implements OnInit {
               if (doDelete) {
                 return this.handleDeleteUser();
               }
-            })
+            });
         } else {
           return this.matSnackBar.open('Credential revalidation failed. Cannot modify profile', 'CLOSE').afterDismissed().toPromise();
         }

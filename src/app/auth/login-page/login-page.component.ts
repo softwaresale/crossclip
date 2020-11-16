@@ -23,8 +23,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   errorText$: BehaviorSubject<string>;
   loginForm: FormGroup;
 
-  get emailControl(): FormControl { return this.loginForm.get('email') as FormControl }
-  get passwordControl(): FormControl { return this.loginForm.get('password') as FormControl }
+  get emailControl(): FormControl { return this.loginForm.get('email') as FormControl; }
+  get passwordControl(): FormControl { return this.loginForm.get('password') as FormControl; }
 
   constructor(
     private store$: Store<State>,

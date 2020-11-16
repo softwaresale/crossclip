@@ -3,6 +3,9 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Observable } from 'rxjs';
 
 import { ClipEffects } from './clip.effects';
+import {provideMockStore} from '@ngrx/store/testing';
+import {FIREBASE_OPTIONS} from '@angular/fire';
+import {environment} from '../../../environments/environment';
 
 describe('ClipEffects', () => {
   let actions$: Observable<any>;
@@ -12,7 +15,9 @@ describe('ClipEffects', () => {
     TestBed.configureTestingModule({
       providers: [
         ClipEffects,
-        provideMockActions(() => actions$)
+        provideMockStore(),
+        provideMockActions(() => actions$),
+        { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },
       ]
     });
 
