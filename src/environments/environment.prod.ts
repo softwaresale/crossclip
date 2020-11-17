@@ -10,4 +10,5 @@ export const environment = {
     appId: '1:447960949346:web:6a1575386630710539673b',
     measurementId: 'G-4VZZLXSVKJ'
   },
+  readmeLink: 'https://raw.githubusercontent.com/softwaresale/crossclip/develop/README.md',
 };
