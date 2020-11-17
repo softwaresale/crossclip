@@ -1,7 +1,7 @@
 {
   "name": "crossclip",
   "productName": "crossclip",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A cross-platform solution for syncing clipboard content",
   "main": "src/index.js",
   "scripts": {
