@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { auth } from "firebase";
-import { AngularFireAuth } from "@angular/fire/auth";
-import { MatDialogRef } from "@angular/material/dialog";
-import { BehaviorSubject } from "rxjs";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { auth } from 'firebase';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { MatDialogRef } from '@angular/material/dialog';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-revalidate-credentials-dialog',
@@ -34,11 +34,11 @@ export class RevalidateCredentialsDialogComponent implements OnInit, OnDestroy {
     this.loginErrorMessage$.complete();
   }
 
-  onLogin() {
+  async onLogin() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       const reauthCredential = auth.EmailAuthProvider.credential(email, password);
-      this.angularFireAuth.currentUser
+      return this.angularFireAuth.currentUser
         .then(user => user.reauthenticateWithCredential(reauthCredential)
           .then(() => this.matDialogRef.close(true))
         ).catch(err => this.matDialogRef.close(false));

@@ -16,7 +16,7 @@ export const verifyPasswordMatch: ValidatorFn = (group: FormGroup): ValidationEr
   const confirm = group.get('confirmPassword');
 
   return password && confirm && password.value === confirm.value ? null : { 'noMatch': true };
-}
+};
 
 @Component({
   selector: 'app-signup-page',
@@ -24,11 +24,6 @@ export const verifyPasswordMatch: ValidatorFn = (group: FormGroup): ValidationEr
   styleUrls: ['./signup-page.component.sass']
 })
 export class SignupPageComponent implements OnInit, OnDestroy {
-
-  isMobile$: Observable<boolean>;
-  isSubmitted$: BehaviorSubject<boolean>;
-  errorText$: BehaviorSubject<string>;
-  signupForm: FormGroup;
 
   get displayNameControl(): FormControl { return this.signupForm.get('displayName') as FormControl; }
   get emailControl(): FormControl { return this.signupForm.get('email') as FormControl; }
@@ -44,6 +39,15 @@ export class SignupPageComponent implements OnInit, OnDestroy {
     private domSanitizer: DomSanitizer,
     private matIconRegistry: MatIconRegistry,
   ) { }
+
+  isMobile$: Observable<boolean>;
+  isSubmitted$: BehaviorSubject<boolean>;
+  errorText$: BehaviorSubject<string>;
+  signupForm: FormGroup;
+
+  private static createTempAvatarFromSeed(seed: string) {
+    return `https://avatars.dicebear.com/api/identicon/${seed}.svg`;
+  }
 
   ngOnInit(): void {
     this.isMobile$ = this.store$.pipe(select(appStateSelectAnySmall));
@@ -82,28 +86,24 @@ export class SignupPageComponent implements OnInit, OnDestroy {
     this.errorText$.complete();
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.signupForm.valid) {
       this.isSubmitted$.next(true);
       const { email, password, displayName } = this.signupForm.value;
-      this.angularFireAuth.createUserWithEmailAndPassword(email, password)
+      return this.angularFireAuth.createUserWithEmailAndPassword(email, password)
         .then(creds => {
           const photoURL = SignupPageComponent.createTempAvatarFromSeed(creds.user.email);
           return creds.user.updateProfile({ photoURL, displayName }).then(() =>
             this.angularFireAuth.currentUser.then(user => this.handleSuccess(user.displayName))
-          )
+          );
         })
         .catch(error => this.handleError(error));
     }
   }
 
-  onGoogleSignIn() {
-    this.angularFireAuth.signInWithPopup(new auth.GoogleAuthProvider())
+  async onGoogleSignIn() {
+    return this.angularFireAuth.signInWithPopup(new auth.GoogleAuthProvider())
       .then(creds => this.handleSuccess(creds))
       .catch(error => this.handleError(error));
-  }
-
-  private static createTempAvatarFromSeed(seed: string) {
-    return `https://avatars.dicebear.com/api/identicon/${seed}.svg`;
   }
 }

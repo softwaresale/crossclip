@@ -11,18 +11,16 @@ import {
   setDarkTheme,
   setLightTheme
 } from './state/app-state/app-state.actions';
-import { ClipboardWatcherService } from './clipboard-watcher/clipboard-watcher.service';
+import { ClipboardService } from './clipboard-watcher/clipboard.service';
 import { ConnectionService } from 'ng-connection-service';
 import {
   appStateSelectAnySmall,
-  appStateSelectBreakpointState,
   appStateSelectIsConnected, appStateSelectTheme
 } from './state/app-state/app-state.selectors';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SwUpdate } from '@angular/service-worker';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DomSanitizer } from "@angular/platform-browser";
-import { OverlayContainer } from "@angular/cdk/overlay";
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-root',
@@ -63,7 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<State>,
     private breakpointObserver: BreakpointObserver,
-    private clipboardWatcherService: ClipboardWatcherService,
+    private clipboardWatcherService: ClipboardService,
     private connectionService: ConnectionService,
     private angularFireAuth: AngularFireAuth,
     private swUpdate: SwUpdate,
@@ -90,7 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
        )
       .subscribe(shouldUpdate => {
         if (shouldUpdate) {
-          this.swUpdate.activateUpdate().then(() => document.location.reload())
+          this.swUpdate.activateUpdate().then(() => document.location.reload());
         }
       });
 
@@ -99,7 +97,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.matSnackBar.open('Crossclip was updated', 'CLOSE', {
           duration: 3000
-        })
+        });
       });
 
     // TODO consider moving this somewhere else
@@ -151,7 +149,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.overlayContainer.getContainerElement().classList.add('light-theme');
           this.styleClass = 'light-theme';
         }
-      })
+      });
   }
 
   get pageHeight(): number {

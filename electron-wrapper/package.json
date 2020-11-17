@@ -11,7 +11,13 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-  "keywords": ["pwa", "angular", "electron", "cross-platform", "clipboard"],
+  "keywords": [
+    "pwa",
+    "angular",
+    "electron",
+    "cross-platform",
+    "clipboard"
+  ],
   "author": {
     "name": "Charlie Sale",
     "email": "softwaresale01@gmail.com"
@@ -53,6 +59,6 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.51",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.51",
     "@electron-forge/maker-zip": "^6.0.0-beta.51",
-    "electron": "9.0.0"
+    "electron": "9.3.1"
   }
 }

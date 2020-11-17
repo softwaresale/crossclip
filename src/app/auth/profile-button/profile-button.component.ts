@@ -1,6 +1,6 @@
 import {
   AfterViewInit,
-  Component, ComponentRef,
+  Component,
   ElementRef,
   InjectionToken, Injector, OnDestroy,
   OnInit,
@@ -12,13 +12,12 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { FlexibleConnectedPositionStrategy, Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
+import { ComponentPortal } from '@angular/cdk/portal';
 import { Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { State } from '../../state/state';
-import { appStateSelectTheme } from '../../state/app-state/app-state.selectors';
-import { ProfileButtonPopupComponent } from "./profile-button-popup/profile-button-popup.component";
-import { User } from "firebase";
+import { ProfileButtonPopupComponent } from './profile-button-popup/profile-button-popup.component';
+import { User } from 'firebase';
 
 export const PROFILE_BUTTON_DISPLAY_NAME = new InjectionToken<string>('PROFILE_BUTTON_DISPLAY_NAME');
 export const PROFILE_BUTTON_CALLBACKS = new InjectionToken<{ onProfile: () => void, onLogout: () => void }>('PROFILE_BUTTON_CALLBACKS');
@@ -115,12 +114,15 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit, OnDestroy 
     this.popupIsShowing = true;
   }
 
-  private createOverlayInjector(displayName: string): PortalInjector {
-    const tokens = new WeakMap<InjectionToken<any>, any>([
-      [ PROFILE_BUTTON_DISPLAY_NAME, displayName ],
-      [ PROFILE_BUTTON_CALLBACKS, { onLogout: this.handleLogout.bind(this), onProfile: this.handleProfile.bind(this) } ],
-    ]);
-    return new PortalInjector(this.injector, tokens);
+  private createOverlayInjector(displayName: string): Injector {
+    return Injector.create({
+      providers: [
+        { provide: PROFILE_BUTTON_DISPLAY_NAME, useValue: displayName },
+        {provide: PROFILE_BUTTON_CALLBACKS, useValue: { onLogout: this.handleLogout.bind(this), onProfile: this.handleProfile.bind(this) }}
+      ],
+      parent: this.injector,
+      name: 'ProfileButtonInjector'
+    });
   }
 
   hidePopup() {
@@ -128,15 +130,13 @@ export class ProfileButtonComponent implements OnInit, AfterViewInit, OnDestroy 
     this.popupIsShowing = false;
   }
 
-  handleLogout() {
-    // this.overlayRef.dispose();
-    this.angularFireAuth.signOut()
+  async handleLogout() {
+    return this.angularFireAuth.signOut()
       .then(() => this.router.navigate(['/login']))
       .then(() => this.hidePopup());
   }
 
-  handleProfile() {
-    // this.overlayRef.dispose();
-    this.router.navigate(['/profile']).then(() => this.hidePopup());
+  async handleProfile() {
+    return this.router.navigate(['/profile']).then(() => this.hidePopup());
   }
 }

@@ -6,6 +6,7 @@ import { handleRemoveClip, syncClip } from '../../state/clip/clip.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { ClipboardService } from '../../clipboard-watcher/clipboard.service';
 
 @Component({
   selector: 'app-clip-display',
@@ -35,6 +36,7 @@ export class ClipDisplayComponent implements OnInit {
     private store$: Store<State>,
     private matSnackbar: MatSnackBar,
     private matDialog: MatDialog,
+    private clipboardService: ClipboardService,
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +47,7 @@ export class ClipDisplayComponent implements OnInit {
   }
 
   async onCopyText() {
-    await navigator.clipboard.writeText(this.clip.content);
+    await this.clipboardService.writeText(this.clip.content);
     this.matSnackbar.open('Copied text to clipboard', 'CLOSE', {
       duration: 2000,
     });
@@ -54,7 +56,6 @@ export class ClipDisplayComponent implements OnInit {
   onRemoveClip() {
     // If the clip is synced, then confirm to delete it from the server
     if (this.clip.synced) {
-
       this.matDialog.open(this.confirmDialog)
         .afterClosed().subscribe(confirm =>
           this.store$.dispatch(handleRemoveClip({ clip: this.clip, deleteRemote: confirm }))
