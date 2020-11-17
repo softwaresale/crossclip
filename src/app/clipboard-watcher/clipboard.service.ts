@@ -1,35 +1,34 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-interface ClipboardInterface {
-  readText: () => Promise<string>,
-  writeText: (msg: string) => Promise<void>,
+interface IClipboardService {
+  readText: () => Promise<string>;
+  writeText: (msg: string) => Promise<void>;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class ClipboardWatcherService {
+export class ClipboardService implements IClipboardService {
 
   private readonly watcher$: Observable<string>;
   private lastValue$: BehaviorSubject<string>;
+  private clipboardInterface: IClipboardService;
 
   constructor() {
-
-    let clipboardInterface: ClipboardInterface;
     const windowUndef = window as any;
     if (windowUndef.electronClipboardApi) {
       // Electron clipboard api has been provided
-      clipboardInterface = windowUndef.electronClipboardApi;
+      this.clipboardInterface = windowUndef.electronClipboardApi;
     } else {
-      clipboardInterface = navigator.clipboard;
+      this.clipboardInterface = navigator.clipboard;
     }
 
     this.lastValue$ = new BehaviorSubject<string>('');
 
     this.watcher$ = new Observable(subscriber => {
       setInterval(() =>
-        clipboardInterface.readText().then(incomingText => {
+        this.clipboardInterface.readText().then(incomingText => {
           // If text is different, then dispatch new event
           if (incomingText !== this.lastValue$.getValue()) {
             this.lastValue$.next(incomingText);
@@ -42,5 +41,13 @@ export class ClipboardWatcherService {
 
   get clipboardWatcher$(): Observable<string> {
     return this.watcher$;
+  }
+
+  readText(): Promise<string> {
+    return this.clipboardInterface.readText();
+  }
+
+  writeText(msg: string): Promise<void> {
+    return this.clipboardInterface.writeText(msg);
   }
 }
