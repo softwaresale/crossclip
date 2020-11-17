@@ -14,11 +14,11 @@ import { SignupPageComponent } from './signup-page/signup-page.component';
 import { RouterModule } from '@angular/router';
 import { ProfileViewComponent } from './profile-view/profile-view.component';
 import { ProfileEditDialogComponent } from './profile-view/profile-edit-dialog/profile-edit-dialog.component';
-import { MatDialogModule } from "@angular/material/dialog";
-import { MatDividerModule } from "@angular/material/divider";
-import { MatTabsModule } from "@angular/material/tabs";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { RevalidateCredentialsDialogComponent } from './profile-view/revalidate-credentials-dialog/revalidate-credentials-dialog.component';
 
 @NgModule({

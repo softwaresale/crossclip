@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, } from '@angular/core';
 import {
   PROFILE_BUTTON_CALLBACKS,
   PROFILE_BUTTON_DISPLAY_NAME,
-} from "../profile-button.component";
+} from '../profile-button.component';
 
 @Component({
   selector: 'app-profile-button-popup',

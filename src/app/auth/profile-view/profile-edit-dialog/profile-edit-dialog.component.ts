@@ -1,17 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
-import { AngularFireAuth } from "@angular/fire/auth";
-import { map, takeUntil } from "rxjs/operators";
-import { verifyPasswordMatch } from "../../signup-page/signup-page.component";
-import { MatDialogRef } from "@angular/material/dialog";
+import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { map, takeUntil } from 'rxjs/operators';
+import { verifyPasswordMatch } from '../../signup-page/signup-page.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 export const verifyOldAndNewDifferent: ValidatorFn = form => {
   const oldPassword = form.get('oldPassword').value;
   const newPassword = form.get('password').value;
 
-  return oldPassword && newPassword && !(oldPassword === newPassword) ? null : { 'oldAndNewMatch': true };
-}
+  return oldPassword && newPassword && !(oldPassword === newPassword) ? null : { oldAndNewMatch: true };
+};
 
 @Component({
   selector: 'app-profile-edit-dialog',
@@ -48,7 +48,7 @@ export class ProfileEditDialogComponent implements OnInit, OnDestroy {
 
     this.credentialsForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
-      shouldUpdatePassword: [false],
+      shouldUpdatePassword: [false, []],
       password: [null, []],
       confirmPassword: [null, []]
     }, { validators: [verifyPasswordMatch] });

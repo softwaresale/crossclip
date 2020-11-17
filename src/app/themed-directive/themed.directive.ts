@@ -1,8 +1,8 @@
 import { Directive, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
-import { select, Store } from "@ngrx/store";
-import { appStateSelectTheme } from "../state/app-state/app-state.selectors";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { select, Store } from '@ngrx/store';
+import { appStateSelectTheme } from '../state/app-state/app-state.selectors';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Directive({
   selector: '[appThemed]'

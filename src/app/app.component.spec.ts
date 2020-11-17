@@ -1,12 +1,34 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialState } from './state/state';
+import {AngularFireModule, FIREBASE_OPTIONS} from '@angular/fire';
+import {of} from 'rxjs';
+import {SwUpdate} from '@angular/service-worker';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {environment} from '../environments/environment';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  const mockSWUpdate = {
+    available: of(true),
+    activated: of(true),
+    activateUpdate: () => Promise.resolve(),
+  };
+
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule.withRoutes([]),
+        MatSnackBarModule,
+        NoopAnimationsModule,
+        // AngularFireModule.initializeApp(environment.firebaseConfig),
+      ],
+      providers: [
+        provideMockStore({ initialState }),
+        { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },
+        { provide: SwUpdate, useValue: mockSWUpdate },
       ],
       declarations: [
         AppComponent
@@ -18,18 +40,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'crossclip'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('crossclip');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('crossclip app is running!');
   });
 });

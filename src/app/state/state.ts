@@ -1,5 +1,5 @@
-import { clipsFeatureKey, clipsInitialState, clipsReducer, ClipState } from "./clip/clip.reducer";
-import { ActionReducerMap } from "@ngrx/store";
+import { clipsFeatureKey, clipsInitialState, clipsReducer, ClipState } from './clip/clip.reducer';
+import { ActionReducerMap } from '@ngrx/store';
 import { AppState, appStateFeatureKey, appStateInitialState, appStateReducer } from './app-state/app-state.reducer';
 
 export interface State {
