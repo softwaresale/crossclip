@@ -1,27 +1,38 @@
 # Crossclip
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.7.
+A device-agnostic cloud-based clipboard manager
 
-## Development server
+Use it [here](https://crossclip.web.app)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Electron version: [here](#)
 
-## Code scaffolding
+## What is Crossclip?
+Crossclip is a clipboard manager built for the modern web. The primary purpose of Crossclip is to make it easier to share
+clipboard contents across multiple devices. It provides a simple cloud-based system for saving your local clipboard
+contents remotely and then accessing them across multiple devices. You can easily copy some text on your phone and then
+paste it on your mac, pc, or iPad or any devices that can access the internet and has a web browser.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Getting Started
+It's easy to get started:
+1. Go to [https://crossclip.web.app](https://crossclip.web.app) or download the electron version for your computer.
+2. Create an account or sign in with google.
+3. Start using Crossclip!
 
-## Build
+## Limitation
+Although Crossclip has a fair amount of flexibility, it has its limitations too. Crossclip is a Progressive Web App (PWA).
+A [PWA](https://web.dev/progressive-web-apps/) is a website designed to have a user experience similar to a native app.
+Thanks to its heavy foundation on the web, Crossclip is cross-platform and portable. The drawback however is that the app
+lacks some features found in true native apps. Some of these short comings are mitigated with electron, which allows
+the app to leverage some system apis and features. However, these features are not available on the web version. Some
+limitations of the web version include:
+* No updating local clipboard contents in the background
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+For security reasons, the current browser-based clipboard API is not permitted to access the system while the DOM is
+not focused. This is honestly for the best, but it means that in order to make your contents show up, you must open
+up the web app. This issue does not exist on the electron version.
 
-## Running unit tests
+* Limited content types
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+For now, Crossclip primarily supports plain text for copying and pasting. This limited range is due to both the infancy
+of this application and the novelty of the browser-based clipboard API. As the app grows and the APIs advance, I intend
+to make the app for diverse. 
