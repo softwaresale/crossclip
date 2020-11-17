@@ -1,0 +1,32 @@
+
+.base-container
+  display: flex
+  flex-direction: column
+  align-items: center
+
+.desktop-container
+  @extend .base-container
+  width: 45%
+  margin: auto
+  padding: 8px
+
+.mobile-container
+  @extend .base-container
+  width: 95%
+  margin: auto
+  padding: 8px
+
+.info-box
+  width: 200px
+  border-width: 1px
+  border-style: solid
+  border-color: black
+  padding: 8px
+  margin-bottom: 16px
+  border-radius: 10px
+
+.info-box-centered
+  @extend .info-box
+  display: flex
+  flex-direction: column
+  align-items: center

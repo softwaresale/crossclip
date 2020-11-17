@@ -11,6 +11,10 @@ const redirectToLoginPage = () => redirectUnauthorizedTo(['login']);
 
 const routes: Routes = [
   {
+    path: 'about',
+    loadChildren: () => import('./about/about.module').then(m => m.AboutModule)
+  },
+  {
     path: 'login',
     component: LoginPageComponent,
   },
@@ -37,10 +41,10 @@ const routes: Routes = [
     data: { authGuardPipe: redirectToLoginPage }
   },
   {
-    'path': '',
+    path: '',
     pathMatch: 'full',
     redirectTo: '/local'
-  }
+  },
 ];
 
 @NgModule({

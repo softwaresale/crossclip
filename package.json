@@ -33,6 +33,7 @@
     "electron-clipboard-extended": "^1.1.1",
     "firebase": "^7.14.4",
     "ng-connection-service": "^1.0.4",
+    "ngx-markdown": "^10.1.1",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0",
     "uuid": "^8.0.0",
