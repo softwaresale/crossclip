@@ -28,6 +28,8 @@ import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 import { ProfileButtonModule } from './auth/profile-button/profile-button.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ThemeSetterModule } from './theme-setter/theme-setter.module';
+import { CONTENT_CLASSIFIERS } from './content-classifiers/content-classification.service';
+import { LinkClassifier } from './content-classifiers/link-classifier';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,14 @@ import { ThemeSetterModule } from './theme-setter/theme-setter.module';
     ProfileButtonModule,
     ThemeSetterModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: CONTENT_CLASSIFIERS,
+      useValue: [
+        new LinkClassifier(),
+      ],
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

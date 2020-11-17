@@ -11,7 +11,7 @@ import {
   setDarkTheme,
   setLightTheme
 } from './state/app-state/app-state.actions';
-import { ClipboardService } from './clipboard-watcher/clipboard.service';
+import { ClipboardService } from './clipboard-service/clipboard.service';
 import { ConnectionService } from 'ng-connection-service';
 import {
   appStateSelectAnySmall,
