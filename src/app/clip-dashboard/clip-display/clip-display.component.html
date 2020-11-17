@@ -18,20 +18,14 @@
         </span>
       </p>
     </div>
-    <div class="content-container">
-      <!--
-      Trim text because leading spaces affect the padding/white space of the window. Makes things
-      more uniform
-       -->
-      <pre>{{ clip.content.trim() }}</pre>
-    </div>
+    <app-clip-content-view [content]="clip.content" [type]="clip.clipType"></app-clip-content-view>
   </div>
   <div class="actions-box">
     <app-clip-actions-box
       [synced]="clip.synced"
-      (onSetToClipboardAction)="onCopyText()"
-      (onSyncAction)="onSyncClip()"
-      (onRemoveAction)="onRemoveClip()">
+      (setToClipboardAction)="onCopyText()"
+      (syncAction)="onSyncClip()"
+      (removeAction)="onRemoveClip()">
     </app-clip-actions-box>
   </div>
 </mat-list-item>

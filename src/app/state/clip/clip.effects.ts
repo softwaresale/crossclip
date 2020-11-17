@@ -12,6 +12,7 @@ import { of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { State } from '../state';
 import { clipsSelectAll } from './clip.selectors';
+import { ContentClassificationService } from '../../content-classifiers/content-classification.service';
 
 @Injectable()
 export class ClipEffects {
@@ -23,13 +24,17 @@ export class ClipEffects {
       if (clips.some(clip => clip.content === action.text)) {
         // Content is already in the clipboard. Either update the timestamp, or do nothing
         const existingClip = clips.find(clip => clip.content === action.text);
-        const updatedTimestamp: Clip = { ...existingClip, created: firestore.Timestamp.now() }
+        const updatedTimestamp: Clip = { ...existingClip, created: firestore.Timestamp.now() };
         return updateClip({ clip: { id: existingClip.id, changes: updatedTimestamp } });
       } else {
+
+        // Get the type of the content
+        const type = this.contentClassifier.getType(action.text);
+
         const newClip: Clip = {
           id: v4(),
           content: action.text,
-          clipType: 'text/plain',
+          clipType: type,
           created: firestore.Timestamp.now(),
           synced: false,
         };
@@ -72,7 +77,8 @@ export class ClipEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<State>,
-    private clipService: ClipService
+    private clipService: ClipService,
+    private contentClassifier: ContentClassificationService,
   ) {}
 
 }
