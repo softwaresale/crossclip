@@ -54,7 +54,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     if (this.loginForm.valid) {
       this.isSubmitted$.next(true);
       const { email, password } = this.loginForm.value;
-      this.angularFireAuth.signInWithEmailAndPassword(email, password)
+      return this.angularFireAuth.signInWithEmailAndPassword(email, password)
         .then(creds => this.handleSuccess(creds))
         .catch(error => this.handleError(error));
     }
@@ -62,14 +62,14 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   async onGoogleLogin() {
     this.isSubmitted$.next(true);
-    this.angularFireAuth.signInWithPopup(new auth.GoogleAuthProvider())
+    return this.angularFireAuth.signInWithPopup(new auth.GoogleAuthProvider())
       .then(creds => this.handleSuccess(creds))
       .catch(error => this.handleError(error));
   }
 
   private handleSuccess(credentials: auth.UserCredential) {
-    this.router.navigate(['/local']);
-    this.matSnackBar.open(`Welcome ${credentials.user.displayName}`, 'CLOSE');
+    return this.router.navigate(['/local'])
+      .then(() => this.matSnackBar.open(`Welcome ${credentials.user.displayName}`, 'CLOSE').afterDismissed().toPromise());
   }
 
   private handleError(error: any) {

@@ -11,7 +11,13 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-  "keywords": ["pwa", "angular", "electron", "cross-platform", "clipboard"],
+  "keywords": [
+    "pwa",
+    "angular",
+    "electron",
+    "cross-platform",
+    "clipboard"
+  ],
   "author": {
     "name": "Charlie Sale",
     "email": "softwaresale01@gmail.com"

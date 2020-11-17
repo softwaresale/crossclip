@@ -11,7 +11,7 @@ import {
   setDarkTheme,
   setLightTheme
 } from './state/app-state/app-state.actions';
-import { ClipboardWatcherService } from './clipboard-watcher/clipboard-watcher.service';
+import { ClipboardService } from './clipboard-watcher/clipboard.service';
 import { ConnectionService } from 'ng-connection-service';
 import {
   appStateSelectAnySmall,
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<State>,
     private breakpointObserver: BreakpointObserver,
-    private clipboardWatcherService: ClipboardWatcherService,
+    private clipboardWatcherService: ClipboardService,
     private connectionService: ConnectionService,
     private angularFireAuth: AngularFireAuth,
     private swUpdate: SwUpdate,

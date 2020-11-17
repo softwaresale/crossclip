@@ -43,12 +43,12 @@ export class ProfileViewComponent implements OnInit {
     );
   }
 
-  onLogout() {
-    this.angularFireAuth.signOut().then(() => this.router.navigate(['/login']));
+  async onLogout() {
+    return this.angularFireAuth.signOut().then(() => this.router.navigate(['/login']));
   }
 
   async editProfile() {
-    await this.matDialog.open(RevalidateCredentialsDialogComponent, { width: '500px' }).afterClosed().toPromise()
+    return this.matDialog.open(RevalidateCredentialsDialogComponent, { width: '500px' }).afterClosed().toPromise()
       .then(loggedIn => {
         if (loggedIn) {
           return this.matDialog.open(ProfileEditDialogComponent, {width: '500px'}).afterClosed().toPromise()
@@ -75,7 +75,7 @@ export class ProfileViewComponent implements OnInit {
       });
   }
 
-  private handleDeleteUser() {
+  private async handleDeleteUser() {
     return this.angularFireAuth.currentUser.then(user => user.delete()
       .then(() => this.router.navigateByUrl('/login')
         .then(() => this.matSnackBar.open('Successfully deleted profile', 'CLOSE').afterDismissed().toPromise())
