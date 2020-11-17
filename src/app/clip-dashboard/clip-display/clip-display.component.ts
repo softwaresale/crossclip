@@ -6,7 +6,7 @@ import { handleRemoveClip, syncClip } from '../../state/clip/clip.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { ClipboardService } from '../../clipboard-watcher/clipboard.service';
+import { ClipboardService } from '../../clipboard-service/clipboard.service';
 
 @Component({
   selector: 'app-clip-display',

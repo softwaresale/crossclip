@@ -13,9 +13,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { ClipContentViewComponent } from './clip-content-view/clip-content-view.component';
 
 @NgModule({
-  declarations: [ClipDashboardComponent, ClipDisplayComponent, ClipActionsBoxComponent],
+  declarations: [ClipDashboardComponent, ClipDisplayComponent, ClipActionsBoxComponent, ClipContentViewComponent],
   imports: [
     CommonModule,
     BrowserModule,

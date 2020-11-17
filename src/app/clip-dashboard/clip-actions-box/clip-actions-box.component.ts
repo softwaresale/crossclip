@@ -25,9 +25,9 @@ interface ClipAction {
 export class ClipActionsBoxComponent implements OnInit {
 
   @Input() synced: boolean;
-  @Output() onSetToClipboardAction: EventEmitter<void> = new EventEmitter<void>();
-  @Output() onSyncAction: EventEmitter<void> = new EventEmitter<void>();
-  @Output() onRemoveAction: EventEmitter<void> = new EventEmitter<void>();
+  @Output() setToClipboardAction: EventEmitter<void> = new EventEmitter<void>();
+  @Output() syncAction: EventEmitter<void> = new EventEmitter<void>();
+  @Output() removeAction: EventEmitter<void> = new EventEmitter<void>();
 
   isSmall$: Observable<boolean>;
   isXSmall$: Observable<boolean>;
@@ -49,21 +49,21 @@ export class ClipActionsBoxComponent implements OnInit {
       {
         text: 'Set to Clipboard',
         tooltip: 'Set this clipping to the clipboard',
-        emitter: this.onSetToClipboardAction,
+        emitter: this.setToClipboardAction,
         icon: 'add_circle',
         disableOffline: false,
       },
       {
         text: 'Sync',
         tooltip: 'Synchronize clipping with cloud',
-        emitter: this.onSyncAction,
+        emitter: this.syncAction,
         icon: this.synced ? 'cloud_done' : 'cloud_upload',
         disableOffline: true,
       },
       {
         text: 'Remove',
         tooltip: 'Delete this clipping',
-        emitter: this.onRemoveAction,
+        emitter: this.removeAction,
         icon: 'remove_circle',
         disableOffline: false,
       }
@@ -82,5 +82,4 @@ export class ClipActionsBoxComponent implements OnInit {
       map(connected => !connected)
     );
   }
-
 }

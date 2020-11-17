@@ -1,0 +1,21 @@
+
+<ng-container [ngSwitch]="type">
+  <ng-container *ngSwitchCase="'text/uri-list'" [ngTemplateOutlet]="link"></ng-container>
+  <ng-container *ngSwitchDefault [ngTemplateOutlet]="plainText"></ng-container>
+</ng-container>
+
+<ng-template #link>
+  <div class="content-container-padded">
+    <a href="{{ content }}" target="_blank" class="clip-link" matTooltip="Click to visit link" matTooltipPosition="after">{{ content }}</a>
+  </div>
+</ng-template>
+
+<ng-template #plainText>
+  <div class="content-container">
+    <!--
+    Trim text because leading spaces affect the padding/white space of the window. Makes things
+    more uniform
+     -->
+    <pre>{{ content.trim() }}</pre>
+  </div>
+</ng-template>
