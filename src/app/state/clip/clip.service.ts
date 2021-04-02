@@ -38,6 +38,15 @@ export class ClipService {
     );
   }
 
+  setClipComment(clip: Clip, comment: string): Observable<Clip> {
+    const clipDoc = this.firestore.collection('clips').doc<Clip>(clip.id);
+    return from(clipDoc.update({comment})).pipe(
+      switchMap(() => clipDoc.get().pipe(
+        map(info => info.data() as Clip)
+      ))
+    );
+  }
+
   deleteRemoteClip(clip: Clip): Observable<string> {
     const clipRef = this.firestore.collection<Clip>('clips').doc(clip.id);
     return from(clipRef.delete()).pipe(

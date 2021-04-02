@@ -58,6 +58,21 @@ export class ClipEffects {
     ))
   ));
 
+  setClipContent$ = createEffect(() => this.actions$.pipe(
+    ofType(ClipActions.addComment),
+    switchMap(action => {
+      if (action.clip.synced) {
+        // Set stuff remotely
+        return this.clipService.setClipComment(action.clip, action.comment).pipe(
+          map(updatedClip => updateClip({ clip: { id: updatedClip.id, changes: { comment: updatedClip.comment } } }))
+        );
+      } else {
+        // Update the object
+        return of(updateClip({ clip: { id: action.clip.id, changes: { comment: action.comment } } }));
+      }
+    })
+  ));
+
   handleRemoveClip$ = createEffect(() => this.actions$.pipe(
     ofType(ClipActions.handleRemoveClip),
     switchMap(action => {

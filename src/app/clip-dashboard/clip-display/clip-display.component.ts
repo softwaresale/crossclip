@@ -1,12 +1,15 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, HostBinding, HostListener, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Clip } from '../../state/clip/clip.model';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { State } from '../../state/state';
-import { handleRemoveClip, syncClip } from '../../state/clip/clip.actions';
+import { addComment, handleRemoveClip, syncClip } from '../../state/clip/clip.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ClipboardService } from '../../clipboard-service/clipboard.service';
+import { takeUntil } from 'rxjs/operators';
+import { appStateSelectAnySmall, appStateSelectMobile } from '../../state/app-state/app-state.selectors';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-clip-display',
@@ -24,13 +27,23 @@ import { ClipboardService } from '../../clipboard-service/clipboard.service';
     ])
   ]
 })
-export class ClipDisplayComponent implements OnInit {
+export class ClipDisplayComponent implements OnInit, OnDestroy {
 
   @Input()
   clip: Clip;
 
   @ViewChild('confirmDeleteSyncTemplate')
   confirmDialog: TemplateRef<any>;
+
+  @ViewChild('addCommentDialog')
+  addCommentDialog: TemplateRef<any>;
+
+  isHovered = false;
+  showAddComment = false;
+  addCommentText = '';
+
+  isMobile: boolean;
+  private unsubscribe$: Subject<void>;
 
   constructor(
     private store$: Store<State>,
@@ -40,6 +53,23 @@ export class ClipDisplayComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.unsubscribe$ = new Subject<void>();
+    this.store$.pipe(select(appStateSelectAnySmall), takeUntil(this.unsubscribe$)).subscribe(isMobile => this.isMobile = isMobile);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  @HostListener('mouseenter')
+  private onMouseEnter() {
+    this.isHovered = true;
+  }
+
+  @HostListener('mouseleave')
+  private onMouseLeave() {
+    this.isHovered = false;
   }
 
   onSyncClip() {
@@ -51,6 +81,22 @@ export class ClipDisplayComponent implements OnInit {
     this.matSnackbar.open('Copied text to clipboard', 'CLOSE', {
       duration: 2000,
     });
+  }
+
+  async onShowAddComment(forceDialog: boolean = false) {
+    if (forceDialog || this.isMobile) {
+      this.matDialog.open(this.addCommentDialog).afterClosed().subscribe(commentInfo => {
+        if (commentInfo !== null) {
+          this.onSetClipComment(commentInfo);
+        }
+      });
+    } else {
+      this.showAddComment = !this.showAddComment;
+    }
+  }
+
+  onSetClipComment(text: string) {
+    this.store$.dispatch(addComment({ clip: this.clip, comment: text }));
   }
 
   onRemoveClip() {
