@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, HostBinding, HostListener, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Clip } from '../../state/clip/clip.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '../../state/state';
@@ -38,6 +38,7 @@ export class ClipDisplayComponent implements OnInit, OnDestroy {
   @ViewChild('addCommentDialog')
   addCommentDialog: TemplateRef<any>;
 
+  isHovered = false;
   showAddComment = false;
   addCommentText = '';
 
@@ -59,6 +60,16 @@ export class ClipDisplayComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  @HostListener('mouseenter')
+  private onMouseEnter() {
+    this.isHovered = true;
+  }
+
+  @HostListener('mouseleave')
+  private onMouseLeave() {
+    this.isHovered = false;
   }
 
   onSyncClip() {

@@ -1,5 +1,5 @@
 
-<mat-list-item @fadeClip class="custom-mat-list-item mat-elevation-z1">
+<mat-list-item @fadeClip class="custom-mat-list-item" [class.mat-elevation-z1]="!isHovered" [class.mat-elevation-z4]="isHovered">
   <div class="main-content">
     <div class="meta-data-container">
       <p class="mat-caption">
