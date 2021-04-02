@@ -19,6 +19,24 @@
       </p>
     </div>
     <app-clip-content-view [content]="clip.content" [type]="clip.clipType"></app-clip-content-view>
+    <div *ngIf="clip.comment; else addDescriptionButton">
+      <span class="mat-caption">
+        Comment &#8226; {{ clip.comment }}
+        <button mat-icon-button (click)="onShowAddComment(true)"><mat-icon>edit</mat-icon></button>
+      </span>
+    </div>
+    <ng-template #addDescriptionButton>
+      <div>
+        <button mat-icon-button color="primary" style="margin: 4px" (click)="onShowAddComment()">
+          <mat-icon>short_text</mat-icon>
+        </button>
+        <mat-form-field *ngIf="showAddComment" style="border-top: none">
+          <mat-label>Add Comment</mat-label>
+          <input matInput [(ngModel)]="addCommentText" type="text">
+        </mat-form-field>
+        <button mat-icon-button *ngIf="showAddComment" (click)="onSetClipComment(addCommentText)" [disabled]="addCommentText.length < 1"><mat-icon>done</mat-icon></button>
+      </div>
+    </ng-template>
   </div>
   <div class="actions-box">
     <app-clip-actions-box
@@ -29,6 +47,20 @@
     </app-clip-actions-box>
   </div>
 </mat-list-item>
+
+<ng-template #addCommentDialog>
+  <h1 mat-dialog-title>Update Comment for Clip</h1>
+  <div mat-dialog-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Update Comment</mat-label>
+      <input matInput #commentInput="matInput" [value]="this.clip.comment" type="text">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-stroked-button [mat-dialog-close]="null">CANCEL</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="commentInput.value">UPDATE</button>
+  </div>
+</ng-template>
 
 <ng-template #confirmDeleteSyncTemplate>
   <h1 mat-dialog-title>Are You Sure?</h1>

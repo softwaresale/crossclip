@@ -8,6 +8,11 @@ export const clipboardChanged = createAction(
   props<{ text: string }>(),
 );
 
+export const addComment = createAction(
+  '[Clip/API] Add comment to clip',
+  props<{ clip: Clip, comment: string }>(),
+);
+
 export const syncClip = createAction(
   '[Clip/API] Syncing clip with cloud',
   props<{ clip: Clip }>()

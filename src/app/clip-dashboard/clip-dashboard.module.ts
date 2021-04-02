@@ -14,6 +14,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { ClipContentViewComponent } from './clip-content-view/clip-content-view.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ClipDashboardComponent, ClipDisplayComponent, ClipActionsBoxComponent, ClipContentViewComponent],
@@ -29,6 +32,9 @@ import { ClipContentViewComponent } from './clip-content-view/clip-content-view.
     MatSnackBarModule,
     MatMenuModule,
     MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule
   ],
   exports: [ClipDashboardComponent],
 })
